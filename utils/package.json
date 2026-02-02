@@ -1,0 +1,91 @@
+{
+  "name": "@3asoftwares/utils",
+  "version": "1.0.10",
+  "description": "Utility functions for 3A Softwares E-Commerce",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.mjs",
+      "require": "./dist/client.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.mjs",
+      "require": "./dist/server.js"
+    },
+    "./backend": {
+      "types": "./dist/backend.d.ts",
+      "import": "./dist/backend.mjs",
+      "require": "./dist/backend.js"
+    },
+    "./config/tsconfig.base.json": "./src/config/tsconfig.base.json"
+  },
+  "files": [
+    "dist",
+    "src/config"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:backend": "tsup --config tsup.backend.config.ts",
+    "build:full": "tsup",
+    "prepublishOnly": "npm run build",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "ecommerce",
+    "utils",
+    "utilities",
+    "typescript",
+    "microservices",
+    "3asoftwares"
+  ],
+  "author": "3aSoftwares",
+  "license": "MIT",
+  "homepage": "https://github.com/3asoftwares/E-Commerce#readme",
+  "bugs": {
+    "url": "https://github.com/3asoftwares/E-Commerce/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3asoftwares/E-Commerce.git",
+    "directory": "packages/utils"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1"
+  },
+  "peerDependenciesMeta": {
+    "express": {
+      "optional": true
+    },
+    "express-validator": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@3asoftwares/types": "^1.0.3",
+    "@types/node": "^25.0.3",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.0.16",
+    "vitest": "^4.0.16"
+  }
+}

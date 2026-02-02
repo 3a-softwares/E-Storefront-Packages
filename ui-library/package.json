@@ -1,0 +1,95 @@
+{
+  "name": "@3asoftwares/ui",
+  "version": "1.0.4",
+  "description": "React UI Component Library for E-Commerce",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/ui-library.cjs.js",
+  "module": "dist/ui-library.es.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/ui-library.es.js",
+      "require": "./dist/ui-library.cjs.js"
+    },
+    "./styles.css": "./dist/style.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsc --emitDeclarationOnly",
+    "build:lib": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build -o storybook-static",
+    "prepublishOnly": "npm run build:lib",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "ecommerce",
+    "ui",
+    "components",
+    "react",
+    "storybook",
+    "tailwindcss"
+  ],
+  "author": "3aSoftwares",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3asoftwares/E-Commerce-Microservices-Platform.git",
+    "directory": "packages/ui-library"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.6",
+    "@tailwindcss/forms": "^0.5.11",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.23",
+    "daisyui": "^4.4.19",
+    "postcss": "^8.4.32",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.9.3",
+    "vite": "^5.4.11",
+    "@testing-library/react": "^16.3.1"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.2",
+    "@mdx-js/react": "^3.1.1",
+    "@storybook/addon-a11y": "^8.6.15",
+    "@storybook/addon-docs": "^8.6.15",
+    "@storybook/addon-essentials": "^8.6.15",
+    "@storybook/addon-interactions": "^8.6.15",
+    "@storybook/addon-links": "^8.6.15",
+    "@storybook/addon-onboarding": "^8.6.15",
+    "@storybook/react": "^8.6.15",
+    "@storybook/react-vite": "^8.6.15",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@vitest/coverage-v8": "^1.6.0",
+    "eslint-plugin-storybook": "^0.11.1",
+    "jsdom": "^25.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "storybook": "^8.6.15",
+    "tsup": "^8.5.1",
+    "vitest": "^1.6.0"
+  }
+}

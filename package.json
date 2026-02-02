@@ -1,0 +1,29 @@
+{
+  "name": "e-packages",
+  "version": "1.0.0",
+  "description": "Shared packages - types, utils, ui-library",
+  "private": false,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build:types": "yarn workspace @3asoftwares/types build",
+    "build:utils": "yarn workspace @3asoftwares/utils build",
+    "build:ui": "yarn workspace @3asoftwares/ui build",
+    "build": "yarn build:types && yarn build:utils && yarn build:ui",
+    "test:types": "yarn workspace @3asoftwares/types test",
+    "test:utils": "yarn workspace @3asoftwares/utils test",
+    "test:ui": "yarn workspace @3asoftwares/ui test",
+    "test": "yarn test:types && yarn test:utils && yarn test:ui",
+    "test:coverage": "yarn workspace @3asoftwares/types test -- --coverage && yarn workspace @3asoftwares/utils test -- --coverage && yarn workspace @3asoftwares/ui test -- --coverage",
+    "publish": "yarn workspaces foreach --all npm publish",
+    "docs": "yarn workspace @3asoftwares/ui run docs"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "yarn": ">=3.0.0"
+  }
+}

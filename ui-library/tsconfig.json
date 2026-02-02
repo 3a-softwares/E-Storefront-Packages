@@ -1,0 +1,27 @@
+{
+  "extends": "../utils/src/config/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "src",
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "dist",
+    "moduleResolution": "bundler",
+    "types": ["vite/client"]
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "tests",
+    "src/tests",
+    "src/test-utils.tsx",
+    "**/test-utils.tsx",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
+    "src/stories"
+  ]
+}

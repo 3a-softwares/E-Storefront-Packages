@@ -19,10 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Remove package-lock.json if present
-        run: |
-          if [ -f package-lock.json ]; then rm package-lock.json; fi
-
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -35,25 +31,26 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Check version and bump if needed
-        run: |
-          VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
-            cd ${PKG_DIR}
-            npm version patch --no-git-tag-version
-            cd ..
-            VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          done
-
-      - run: yarn build:types
+      - name: Build types (generate d.ts first)
+        run: yarn workspace @3asoftwares/types build
 
       - name: Verify dist
         run: |
-          test -d "${PKG_DIR}/dist"
-          test "$(ls -A ${PKG_DIR}/dist)"
+          test -d packages/types/dist
+          test "$(ls -A packages/types/dist)"
+
+      - name: Bump version if exists
+        run: |
+          VERSION=$(node -p "require('./packages/types/package.json').version")
+          while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
+            cd packages/types
+            npm version patch --no-git-tag-version
+            cd ../..
+            VERSION=$(node -p "require('./packages/types/package.json').version")
+          done
 
       - run: |
-          cd ${PKG_DIR}
+          cd packages/types
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -77,29 +74,30 @@ jobs:
 
       - run: yarn install --frozen-lockfile
 
-      - run: npm ping
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # ⬇️ IMPORTANT: build types again so workspace resolution works
+      - name: Build types dependency
+        run: yarn workspace @3asoftwares/types build
 
-      - name: Check version and bump if needed
-        run: |
-          VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
-            cd ${PKG_DIR}
-            npm version patch --no-git-tag-version
-            cd ..
-            VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          done
-
-      - run: yarn build:utils
+      - name: Build utils
+        run: yarn workspace @3asoftwares/utils build
 
       - name: Verify dist
         run: |
-          test -d "${PKG_DIR}/dist"
-          test "$(ls -A ${PKG_DIR}/dist)"
+          test -d packages/utils/dist
+          test "$(ls -A packages/utils/dist)"
+
+      - name: Bump version if exists
+        run: |
+          VERSION=$(node -p "require('./packages/utils/package.json').version")
+          while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
+            cd packages/utils
+            npm version patch --no-git-tag-version
+            cd ../..
+            VERSION=$(node -p "require('./packages/utils/package.json').version")
+          done
 
       - run: |
-          cd ${PKG_DIR}
+          cd packages/utils
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -123,29 +121,30 @@ jobs:
 
       - run: yarn install --frozen-lockfile
 
-      - run: npm ping
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # ⬇️ IMPORTANT: build deps in order
+      - run: yarn workspace @3asoftwares/types build
+      - run: yarn workspace @3asoftwares/utils build
 
-      - name: Check version and bump if needed
-        run: |
-          VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
-            cd ${PKG_DIR}
-            npm version patch --no-git-tag-version
-            cd ..
-            VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          done
-
-      - run: yarn build:ui
+      - name: Build ui
+        run: yarn workspace @3asoftwares/ui build
 
       - name: Verify dist
         run: |
-          test -d "${PKG_DIR}/dist"
-          test "$(ls -A ${PKG_DIR}/dist)"
+          test -d packages/ui-library/dist
+          test "$(ls -A packages/ui-library/dist)"
+
+      - name: Bump version if exists
+        run: |
+          VERSION=$(node -p "require('./packages/ui-library/package.json').version")
+          while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
+            cd packages/ui-library
+            npm version patch --no-git-tag-version
+            cd ../..
+            VERSION=$(node -p "require('./packages/ui-library/package.json').version")
+          done
 
       - run: |
-          cd ${PKG_DIR}
+          cd packages/ui-library
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -170,12 +169,14 @@ jobs:
 
       - run: yarn install --frozen-lockfile
 
+      - run: yarn workspace @3asoftwares/types build
+      - run: yarn workspace @3asoftwares/utils build
       - run: yarn workspace @3asoftwares/ui build-storybook
 
-      - run: test -d ui-library/storybook-static
+      - run: test -d packages/ui-library/storybook-static
 
       - uses: actions/upload-pages-artifact@v2
         with:
-          path: ui-library/storybook-static
+          path: packages/ui-library/storybook-static
 
       - uses: actions/deploy-pages@v2

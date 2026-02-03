@@ -19,8 +19,7 @@ jobs:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main' &&
-      github.event.workflow_run.pull_requests == null
+      github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     name: Build types
     steps:
@@ -47,8 +46,7 @@ jobs:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main' &&
-      github.event.workflow_run.pull_requests == null
+      github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     name: Publish types
     needs: build-types
@@ -106,8 +104,7 @@ jobs:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main' &&
-      github.event.workflow_run.pull_requests == null
+      github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     name: Publish utils
     needs: build-types
@@ -163,8 +160,7 @@ jobs:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main' &&
-      github.event.workflow_run.pull_requests == null
+      github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     name: Publish ui
     needs: build-types

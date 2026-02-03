@@ -9,9 +9,29 @@ env:
   NODE_VERSION: 18
 
 jobs:
+  build-types:
+    runs-on: ubuntu-latest
+    name: Build types
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - run: yarn install --frozen-lockfile
+      - run: yarn build:types
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: types-dist
+          path: types/dist
+
   publish-types:
     runs-on: ubuntu-latest
     name: Publish types
+    needs: build-types
     env:
       PKG_NAME: "@3asoftwares/types"
       PKG_DIR: "types"
@@ -25,32 +45,24 @@ jobs:
           registry-url: https://registry.npmjs.org
           cache: yarn
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: types-dist
+          path: types/dist
+
       - run: yarn install --frozen-lockfile
 
-      - run: npm ping
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Build types (generate d.ts first)
-        run: yarn workspace @3asoftwares/types build
-
-      - name: Verify dist
-        run: |
-          test -d packages/types/dist
-          test "$(ls -A packages/types/dist)"
-
-      - name: Bump version if exists
-        run: |
-          VERSION=$(node -p "require('./packages/types/package.json').version")
+      - run: |
+          VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
           while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
-            cd packages/types
+            cd ${PKG_DIR}
             npm version patch --no-git-tag-version
-            cd ../..
-            VERSION=$(node -p "require('./packages/types/package.json').version")
+            cd ..
+            VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
           done
 
       - run: |
-          cd packages/types
+          cd ${PKG_DIR}
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -58,7 +70,7 @@ jobs:
   publish-utils:
     runs-on: ubuntu-latest
     name: Publish utils
-    needs: publish-types
+    needs: build-types
     env:
       PKG_NAME: "@3asoftwares/utils"
       PKG_DIR: "utils"
@@ -72,32 +84,25 @@ jobs:
           registry-url: https://registry.npmjs.org
           cache: yarn
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: types-dist
+          path: types/dist
+
       - run: yarn install --frozen-lockfile
+      - run: yarn build:utils
 
-      # ⬇️ IMPORTANT: build types again so workspace resolution works
-      - name: Build types dependency
-        run: yarn workspace @3asoftwares/types build
-
-      - name: Build utils
-        run: yarn workspace @3asoftwares/utils build
-
-      - name: Verify dist
-        run: |
-          test -d packages/utils/dist
-          test "$(ls -A packages/utils/dist)"
-
-      - name: Bump version if exists
-        run: |
-          VERSION=$(node -p "require('./packages/utils/package.json').version")
+      - run: |
+          VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
           while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
-            cd packages/utils
+            cd ${PKG_DIR}
             npm version patch --no-git-tag-version
-            cd ../..
-            VERSION=$(node -p "require('./packages/utils/package.json').version")
+            cd ..
+            VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
           done
 
       - run: |
-          cd packages/utils
+          cd ${PKG_DIR}
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -105,7 +110,7 @@ jobs:
   publish-ui:
     runs-on: ubuntu-latest
     name: Publish ui
-    needs: publish-utils
+    needs: build-types
     env:
       PKG_NAME: "@3asoftwares/ui"
       PKG_DIR: "ui-library"
@@ -119,32 +124,26 @@ jobs:
           registry-url: https://registry.npmjs.org
           cache: yarn
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: types-dist
+          path: types/dist
+
       - run: yarn install --frozen-lockfile
+      - run: yarn build:utils
+      - run: yarn build:ui
 
-      # ⬇️ IMPORTANT: build deps in order
-      - run: yarn workspace @3asoftwares/types build
-      - run: yarn workspace @3asoftwares/utils build
-
-      - name: Build ui
-        run: yarn workspace @3asoftwares/ui build
-
-      - name: Verify dist
-        run: |
-          test -d packages/ui-library/dist
-          test "$(ls -A packages/ui-library/dist)"
-
-      - name: Bump version if exists
-        run: |
-          VERSION=$(node -p "require('./packages/ui-library/package.json').version")
+      - run: |
+          VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
           while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
-            cd packages/ui-library
+            cd ${PKG_DIR}
             npm version patch --no-git-tag-version
-            cd ../..
-            VERSION=$(node -p "require('./packages/ui-library/package.json').version")
+            cd ..
+            VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
           done
 
       - run: |
-          cd packages/ui-library
+          cd ${PKG_DIR}
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -168,15 +167,14 @@ jobs:
           cache: yarn
 
       - run: yarn install --frozen-lockfile
-
-      - run: yarn workspace @3asoftwares/types build
-      - run: yarn workspace @3asoftwares/utils build
+      - run: yarn build:types
+      - run: yarn build:utils
       - run: yarn workspace @3asoftwares/ui build-storybook
 
-      - run: test -d packages/ui-library/storybook-static
+      - run: test -d ui-library/storybook-static
 
       - uses: actions/upload-pages-artifact@v2
         with:
-          path: packages/ui-library/storybook-static
+          path: ui-library/storybook-static
 
       - uses: actions/deploy-pages@v2

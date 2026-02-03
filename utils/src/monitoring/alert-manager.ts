@@ -65,7 +65,6 @@ export class AlertManager {
         message,
         this.enrichDetails(options.details)
       );
-      console.log(`[CRITICAL ALERT] ${this.context.service}: ${message}`);
     } catch (error) {
       console.error('Failed to send critical alert:', error);
     }
@@ -82,7 +81,6 @@ export class AlertManager {
         message,
         this.enrichDetails(options.details)
       );
-      console.log(`[WARNING ALERT] ${this.context.service}: ${message}`);
     } catch (error) {
       console.error('Failed to send warning alert:', error);
     }
@@ -99,7 +97,6 @@ export class AlertManager {
         message,
         this.enrichDetails(options.details)
       );
-      console.log(`[INFO ALERT] ${this.context.service}: ${message}`);
     } catch (error) {
       console.error('Failed to send info alert:', error);
     }
@@ -116,7 +113,6 @@ export class AlertManager {
         message,
         this.enrichDetails(options.details)
       );
-      console.log(`[RECOVERY] ${this.context.service}: ${message}`);
     } catch (error) {
       console.error('Failed to send recovery alert:', error);
     }

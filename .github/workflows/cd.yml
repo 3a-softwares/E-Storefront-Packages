@@ -1,6 +1,5 @@
 name: Deploy & Publish
 
-
 on:
   push:
     branches:
@@ -10,13 +9,14 @@ env:
   NODE_VERSION: 18
 
 jobs:
-
-
   publish-types:
     runs-on: ubuntu-latest
     name: Publish types
     steps:
       - uses: actions/checkout@v4
+      - name: Remove package-lock.json if present
+        run: |
+          if [ -f package-lock.json ]; then rm package-lock.json; fi
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -124,7 +124,6 @@ jobs:
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
 
   storybook:
     runs-on: ubuntu-latest

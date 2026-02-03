@@ -14,6 +14,8 @@ jobs:
     name: Build types
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - uses: actions/setup-node@v4
         with:
@@ -38,30 +40,41 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect version change
+        id: changed
+        run: |
+          git diff HEAD~1 HEAD -- ${PKG_DIR}/package.json | grep '"version"' \
+            && echo "changed=true" >> $GITHUB_OUTPUT \
+            || echo "changed=false" >> $GITHUB_OUTPUT
 
       - uses: actions/setup-node@v4
+        if: steps.changed.outputs.changed == 'true'
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
           cache: yarn
 
       - uses: actions/download-artifact@v4
+        if: steps.changed.outputs.changed == 'true'
         with:
           name: types-dist
           path: types/dist
 
-      - run: yarn install --frozen-lockfile
-
-      - run: |
+      - name: Check npm version
+        id: check
+        if: steps.changed.outputs.changed == 'true'
+        run: |
           VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
-            cd ${PKG_DIR}
-            npm version patch --no-git-tag-version
-            cd ..
-            VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          done
+          if npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+          fi
 
-      - run: |
+      - name: Publish types
+        if: steps.changed.outputs.changed == 'true' && steps.check.outputs.skip != 'true'
+        run: |
           cd ${PKG_DIR}
           npm publish --access public
         env:
@@ -77,31 +90,48 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect version change
+        id: changed
+        run: |
+          git diff HEAD~1 HEAD -- ${PKG_DIR}/package.json | grep '"version"' \
+            && echo "changed=true" >> $GITHUB_OUTPUT \
+            || echo "changed=false" >> $GITHUB_OUTPUT
 
       - uses: actions/setup-node@v4
+        if: steps.changed.outputs.changed == 'true'
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
           cache: yarn
 
       - uses: actions/download-artifact@v4
+        if: steps.changed.outputs.changed == 'true'
         with:
           name: types-dist
           path: types/dist
 
       - run: yarn install --frozen-lockfile
-      - run: yarn build:utils
+        if: steps.changed.outputs.changed == 'true'
 
-      - run: |
+      - name: Check npm version
+        id: check
+        if: steps.changed.outputs.changed == 'true'
+        run: |
           VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
-            cd ${PKG_DIR}
-            npm version patch --no-git-tag-version
-            cd ..
-            VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          done
+          if npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+          fi
 
-      - run: |
+      - name: Build utils
+        if: steps.changed.outputs.changed == 'true' && steps.check.outputs.skip != 'true'
+        run: yarn build:utils
+
+      - name: Publish utils
+        if: steps.changed.outputs.changed == 'true' && steps.check.outputs.skip != 'true'
+        run: |
           cd ${PKG_DIR}
           npm publish --access public
         env:
@@ -117,32 +147,50 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect version change
+        id: changed
+        run: |
+          git diff HEAD~1 HEAD -- ${PKG_DIR}/package.json | grep '"version"' \
+            && echo "changed=true" >> $GITHUB_OUTPUT \
+            || echo "changed=false" >> $GITHUB_OUTPUT
 
       - uses: actions/setup-node@v4
+        if: steps.changed.outputs.changed == 'true'
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
           cache: yarn
 
       - uses: actions/download-artifact@v4
+        if: steps.changed.outputs.changed == 'true'
         with:
           name: types-dist
           path: types/dist
 
       - run: yarn install --frozen-lockfile
-      - run: yarn build:utils
-      - run: yarn build:ui
+        if: steps.changed.outputs.changed == 'true'
 
-      - run: |
+      - name: Check npm version
+        id: check
+        if: steps.changed.outputs.changed == 'true'
+        run: |
           VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
-            cd ${PKG_DIR}
-            npm version patch --no-git-tag-version
-            cd ..
-            VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          done
+          if npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+          fi
 
-      - run: |
+      - name: Build ui
+        if: steps.changed.outputs.changed == 'true' && steps.check.outputs.skip != 'true'
+        run: |
+          yarn build:utils
+          yarn build:ui
+
+      - name: Publish ui
+        if: steps.changed.outputs.changed == 'true' && steps.check.outputs.skip != 'true'
+        run: |
           cd ${PKG_DIR}
           npm publish --access public
         env:
@@ -153,37 +201,42 @@ jobs:
     name: Deploy Storybook
     needs: publish-ui
 
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     permissions:
       contents: read
       pages: write
       id-token: write
 
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: yarn
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: yarn
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
 
-      - name: Build dependencies
-        run: |
+    - name: Build dependencies
+      run: |
           yarn build:types
           yarn build:utils
 
-      - name: Build Storybook
-        run: yarn workspace @3asoftwares/ui build-storybook
+    - name: Build Storybook
+      run: yarn workspace @3asoftwares/ui build-storybook
 
-      - name: Verify Storybook output
-        run: test -d ui-library/storybook-static
+    - name: Verify Storybook output
+      run: test -d ui-library/storybook-static
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ui-library/storybook-static
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ui-library/storybook-static
 
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v2
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2

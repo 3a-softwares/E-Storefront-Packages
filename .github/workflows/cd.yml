@@ -12,39 +12,48 @@ jobs:
   publish-types:
     runs-on: ubuntu-latest
     name: Publish types
+    env:
+      PKG_NAME: "@3asoftwares/types"
+      PKG_DIR: "types"
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Remove package-lock.json if present
         run: |
           if [ -f package-lock.json ]; then rm package-lock.json; fi
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
           cache: yarn
+
       - run: yarn install --frozen-lockfile
+
       - run: npm ping
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Check version and bump if needed
         run: |
-          PKG_NAME="@3asoftwares/types"
-          PKG_DIR="types"
-          VERSION=$(node -p "require('./$PKG_DIR/package.json').version")
-          while npm view "$PKG_NAME@$VERSION" version >/dev/null 2>&1; do
-            echo "Version $VERSION already exists. Bumping patch version..."
-            cd $PKG_DIR
+          VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
+          while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
+            cd ${PKG_DIR}
             npm version patch --no-git-tag-version
             cd ..
-            VERSION=$(node -p "require('./$PKG_DIR/package.json').version")
-            echo "New version: $VERSION"
+            VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
           done
+
       - run: yarn build:types
+
+      - name: Verify dist
+        run: |
+          test -d "${PKG_DIR}/dist"
+          test "$(ls -A ${PKG_DIR}/dist)"
+
       - run: |
-          test -d "$PKG_DIR/dist"
-          test "$(ls -A $PKG_DIR/dist)"
-      - run: |
-          cd "$PKG_DIR"
+          cd ${PKG_DIR}
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -53,36 +62,44 @@ jobs:
     runs-on: ubuntu-latest
     name: Publish utils
     needs: publish-types
+    env:
+      PKG_NAME: "@3asoftwares/utils"
+      PKG_DIR: "utils"
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
           cache: yarn
+
       - run: yarn install --frozen-lockfile
+
       - run: npm ping
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Check version and bump if needed
         run: |
-          PKG_NAME="@3asoftwares/utils"
-          PKG_DIR="utils"
-          VERSION=$(node -p "require('./$PKG_DIR/package.json').version")
-          while npm view "$PKG_NAME@$VERSION" version >/dev/null 2>&1; do
-            echo "Version $VERSION already exists. Bumping patch version..."
-            cd $PKG_DIR
+          VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
+          while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
+            cd ${PKG_DIR}
             npm version patch --no-git-tag-version
             cd ..
-            VERSION=$(node -p "require('./$PKG_DIR/package.json').version")
-            echo "New version: $VERSION"
+            VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
           done
+
       - run: yarn build:utils
+
+      - name: Verify dist
+        run: |
+          test -d "${PKG_DIR}/dist"
+          test "$(ls -A ${PKG_DIR}/dist)"
+
       - run: |
-          test -d "$PKG_DIR/dist"
-          test "$(ls -A $PKG_DIR/dist)"
-      - run: |
-          cd "$PKG_DIR"
+          cd ${PKG_DIR}
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -91,36 +108,44 @@ jobs:
     runs-on: ubuntu-latest
     name: Publish ui
     needs: publish-utils
+    env:
+      PKG_NAME: "@3asoftwares/ui"
+      PKG_DIR: "ui-library"
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
           cache: yarn
+
       - run: yarn install --frozen-lockfile
+
       - run: npm ping
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Check version and bump if needed
         run: |
-          PKG_NAME="@3asoftwares/ui"
-          PKG_DIR="ui-library"
-          VERSION=$(node -p "require('./$PKG_DIR/package.json').version")
-          while npm view "$PKG_NAME@$VERSION" version >/dev/null 2>&1; do
-            echo "Version $VERSION already exists. Bumping patch version..."
-            cd $PKG_DIR
+          VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
+          while npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; do
+            cd ${PKG_DIR}
             npm version patch --no-git-tag-version
             cd ..
-            VERSION=$(node -p "require('./$PKG_DIR/package.json').version")
-            echo "New version: $VERSION"
+            VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
           done
+
       - run: yarn build:ui
+
+      - name: Verify dist
+        run: |
+          test -d "${PKG_DIR}/dist"
+          test "$(ls -A ${PKG_DIR}/dist)"
+
       - run: |
-          test -d "$PKG_DIR/dist"
-          test "$(ls -A $PKG_DIR/dist)"
-      - run: |
-          cd "$PKG_DIR"
+          cd ${PKG_DIR}
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -129,21 +154,28 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy Storybook
     needs: publish-ui
+
     permissions:
       contents: read
       pages: write
       id-token: write
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
+
       - run: yarn install --frozen-lockfile
+
       - run: yarn workspace @3asoftwares/ui build-storybook
-      - run: |
-          test -d ui-library/storybook-static
+
+      - run: test -d ui-library/storybook-static
+
       - uses: actions/upload-pages-artifact@v2
         with:
           path: ui-library/storybook-static
+
       - uses: actions/deploy-pages@v2

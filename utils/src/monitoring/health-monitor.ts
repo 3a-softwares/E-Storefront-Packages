@@ -119,7 +119,6 @@ export class HealthMonitor {
     }
 
     this.running = true;
-    console.log(`[HealthMonitor] Starting health monitoring for ${this.config.serviceName}`);
 
     for (const check of this.config.checks) {
       const interval = check.interval || this.config.defaultInterval || 30000;
@@ -150,8 +149,6 @@ export class HealthMonitor {
    */
   stop(): void {
     this.running = false;
-    console.log(`[HealthMonitor] Stopping health monitoring for ${this.config.serviceName}`);
-
     for (const [name, intervalId] of this.intervals) {
       clearInterval(intervalId);
       this.intervals.delete(name);

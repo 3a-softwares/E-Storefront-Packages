@@ -1,4 +1,4 @@
-name: e-packages CI
+name: CI Pipeline
 
 on:
   push:

@@ -1,9 +1,9 @@
-name: e-packages CD
+name: Deploy & Publish
 
 on:
   workflow_run:
     workflows:
-      - e-packages CI
+      - CI Pipeline
     types:
       - completed
 

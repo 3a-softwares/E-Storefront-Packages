@@ -89,7 +89,7 @@
     "react-dom": "^18.2.0",
     "storybook": "^8.6.15",
     "tsup": "^8.5.1",
-      "vite": "^4.4.11",
+    "vite": "^4.4.11",
     "vitest": "0.34.6"
   },
   "resolutions": {

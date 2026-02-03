@@ -31,11 +31,11 @@ jobs:
       - name: Resolve types package path
         id: types
         run: |
-          echo "dir=$(find packages -type f -name package.json | grep '/types/package.json' | sed 's|/package.json||')" >> $GITHUB_OUTPUT
+          echo "dir=types" >> $GITHUB_OUTPUT
 
       - name: Check version
         run: |
-          VERSION=$(node -p "require('${{ steps.types.outputs.dir }}/package.json').version")
+          VERSION=$(node -p "require('./types/package.json').version")
           if npm view "@3asoftwares/types@$VERSION" version >/dev/null 2>&1; then exit 1; fi
 
       - run: yarn build:types
@@ -73,11 +73,11 @@ jobs:
       - name: Resolve utils package path
         id: utils
         run: |
-          echo "dir=$(find packages -type f -name package.json | grep '/utils/package.json' | sed 's|/package.json||')" >> $GITHUB_OUTPUT
+          echo "dir=utils" >> $GITHUB_OUTPUT
 
       - name: Check version
         run: |
-          VERSION=$(node -p "require('${{ steps.utils.outputs.dir }}/package.json').version")
+          VERSION=$(node -p "require('./utils/package.json').version")
           if npm view "@3asoftwares/utils@$VERSION" version >/dev/null 2>&1; then exit 1; fi
 
       - run: yarn build:utils
@@ -115,11 +115,11 @@ jobs:
       - name: Resolve ui package path
         id: ui
         run: |
-          echo "dir=$(find packages -type f -name package.json | grep '/ui' | head -1 | sed 's|/package.json||')" >> $GITHUB_OUTPUT
+          echo "dir=ui-library" >> $GITHUB_OUTPUT
 
       - name: Check version
         run: |
-          VERSION=$(node -p "require('${{ steps.ui.outputs.dir }}/package.json').version")
+          VERSION=$(node -p "require('./ui-library/package.json').version")
           if npm view "@3asoftwares/ui@$VERSION" version >/dev/null 2>&1; then exit 1; fi
 
       - run: yarn build:ui
@@ -157,10 +157,10 @@ jobs:
       - run: yarn workspace @3asoftwares/ui build-storybook
 
       - run: |
-          test -d packages/ui-library/storybook-static
+          test -d ui-library/storybook-static
 
       - uses: actions/upload-pages-artifact@v2
         with:
-          path: packages/ui-library/storybook-static
+          path: ui-library/storybook-static
 
       - uses: actions/deploy-pages@v2

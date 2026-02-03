@@ -1,11 +1,9 @@
 name: Deploy & Publish
 
 on:
-  push:
-    branches: [main]
-  # workflow_run:
-  #   workflows: ['CI Pipeline']
-  #   types: [completed]
+  workflow_run:
+    workflows: ['CI Pipeline']
+    types: [completed]
 
 env:
   NODE_VERSION: 18
@@ -35,10 +33,7 @@ jobs:
           path: types/dist
 
   publish-types:
-    if: >
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     name: Publish types
     needs: build-types
@@ -91,10 +86,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-utils:
-    if: >
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     name: Publish utils
     needs: build-types
@@ -147,10 +139,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-ui:
-    if: >
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     name: Publish ui
     needs: build-types
@@ -205,10 +194,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   storybook:
-    if: >
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main'
+    if: github.ref == 'refs/heads/main'
     name: Deploy Storybook (gh-pages)
     runs-on: ubuntu-latest
     needs: publish-ui

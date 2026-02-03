@@ -53,7 +53,13 @@ jobs:
       - name: Check version not already published
         run: |
           PKG="@3asoftwares/${{ matrix.pkg }}"
-          VERSION=$(node -p "require('./packages/${{ matrix.pkg }}/package.json').version")
+          # Map matrix.pkg to correct folder name
+          if [ "${{ matrix.pkg }}" = "ui" ]; then
+            PKG_DIR="ui-library"
+          else
+            PKG_DIR="${{ matrix.pkg }}"
+          fi
+          VERSION=$(node -p "require('./$PKG_DIR/package.json').version")
 
           if npm view "$PKG@$VERSION" version >/dev/null 2>&1; then
             echo "❌ $PKG@$VERSION already exists on npm"

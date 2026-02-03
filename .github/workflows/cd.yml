@@ -75,7 +75,14 @@ jobs:
         if: steps.changed.outputs.changed == 'true'
         run: |
           VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          if npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; then
+          NPM_VERSION=$(npm view "${PKG_NAME}" version || echo "0.0.0")
+          function version_gt() {
+            [ "$1" = "$2" ] && return 1
+            [ "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1" ]
+          }
+          if version_gt "$VERSION" "$NPM_VERSION"; then
+            echo "skip=false" >> $GITHUB_OUTPUT
+          else
             echo "skip=true" >> $GITHUB_OUTPUT
           else
             echo "skip=false" >> $GITHUB_OUTPUT

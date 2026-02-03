@@ -10,8 +10,8 @@ env:
 
 jobs:
   publish-types:
-    name: Publish types
     runs-on: ubuntu-latest
+    name: Publish types
 
     steps:
       - uses: actions/checkout@v4
@@ -28,25 +28,31 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - run: |
-          VERSION=$(node -p "require('./packages/types/package.json').version")
+      - name: Resolve types package path
+        id: types
+        run: |
+          echo "dir=$(find packages -type f -name package.json | grep '/types/package.json' | sed 's|/package.json||')" >> $GITHUB_OUTPUT
+
+      - name: Check version
+        run: |
+          VERSION=$(node -p "require('${{ steps.types.outputs.dir }}/package.json').version")
           if npm view "@3asoftwares/types@$VERSION" version >/dev/null 2>&1; then exit 1; fi
 
       - run: yarn build:types
 
       - run: |
-          test -d packages/types/dist
-          test "$(ls -A packages/types/dist)"
+          test -d "${{ steps.types.outputs.dir }}/dist"
+          test "$(ls -A ${{ steps.types.outputs.dir }}/dist)"
 
       - run: |
-          cd packages/types
+          cd "${{ steps.types.outputs.dir }}"
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-utils:
-    name: Publish utils
     runs-on: ubuntu-latest
+    name: Publish utils
     needs: publish-types
 
     steps:
@@ -64,25 +70,31 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - run: |
-          VERSION=$(node -p "require('./packages/utils/package.json').version")
+      - name: Resolve utils package path
+        id: utils
+        run: |
+          echo "dir=$(find packages -type f -name package.json | grep '/utils/package.json' | sed 's|/package.json||')" >> $GITHUB_OUTPUT
+
+      - name: Check version
+        run: |
+          VERSION=$(node -p "require('${{ steps.utils.outputs.dir }}/package.json').version")
           if npm view "@3asoftwares/utils@$VERSION" version >/dev/null 2>&1; then exit 1; fi
 
       - run: yarn build:utils
 
       - run: |
-          test -d packages/utils/dist
-          test "$(ls -A packages/utils/dist)"
+          test -d "${{ steps.utils.outputs.dir }}/dist"
+          test "$(ls -A ${{ steps.utils.outputs.dir }}/dist)"
 
       - run: |
-          cd packages/utils
+          cd "${{ steps.utils.outputs.dir }}"
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-ui:
-    name: Publish ui
     runs-on: ubuntu-latest
+    name: Publish ui
     needs: publish-utils
 
     steps:
@@ -100,25 +112,31 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - run: |
-          VERSION=$(node -p "require('./packages/ui-library/package.json').version")
+      - name: Resolve ui package path
+        id: ui
+        run: |
+          echo "dir=$(find packages -type f -name package.json | grep '/ui' | head -1 | sed 's|/package.json||')" >> $GITHUB_OUTPUT
+
+      - name: Check version
+        run: |
+          VERSION=$(node -p "require('${{ steps.ui.outputs.dir }}/package.json').version")
           if npm view "@3asoftwares/ui@$VERSION" version >/dev/null 2>&1; then exit 1; fi
 
       - run: yarn build:ui
 
       - run: |
-          test -d packages/ui-library/dist
-          test "$(ls -A packages/ui-library/dist)"
+          test -d "${{ steps.ui.outputs.dir }}/dist"
+          test "$(ls -A ${{ steps.ui.outputs.dir }}/dist)"
 
       - run: |
-          cd packages/ui-library
+          cd "${{ steps.ui.outputs.dir }}"
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   storybook:
-    name: Deploy Storybook
     runs-on: ubuntu-latest
+    name: Deploy Storybook
     needs: publish-ui
 
     permissions:

@@ -11,12 +11,10 @@ env:
 
 jobs:
 
-  publish:
+
+  publish-types:
     runs-on: ubuntu-latest
-    name: Publish all packages in parallel
-    strategy:
-      matrix:
-        pkg: [types, utils, ui]
+    name: Publish types
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -28,32 +26,101 @@ jobs:
       - run: npm ping
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Set package dir
-        id: pkgdir
-        run: |
-          if [ "${{ matrix.pkg }}" = "ui" ]; then
-            echo "dir=ui-library" >> $GITHUB_OUTPUT
-          else
-            echo "dir=${{ matrix.pkg }}" >> $GITHUB_OUTPUT
-          fi
       - name: Check version and bump if needed
         run: |
-          PKG_NAME="@3asoftwares/${{ matrix.pkg }}"
-          VERSION=$(node -p "require('./${{ steps.pkgdir.outputs.dir }}/package.json').version")
-          if npm view "$PKG_NAME@$VERSION" version >/dev/null 2>&1; then
+          PKG_NAME="@3asoftwares/types"
+          PKG_DIR="types"
+          VERSION=$(node -p "require('./$PKG_DIR/package.json').version")
+          while npm view "$PKG_NAME@$VERSION" version >/dev/null 2>&1; do
             echo "Version $VERSION already exists. Bumping patch version..."
-            cd ${{ steps.pkgdir.outputs.dir }}
+            cd $PKG_DIR
             npm version patch --no-git-tag-version
-            cd ../
-            VERSION=$(node -p "require('./${{ steps.pkgdir.outputs.dir }}/package.json').version")
+            cd ..
+            VERSION=$(node -p "require('./$PKG_DIR/package.json').version")
             echo "New version: $VERSION"
-          fi
-      - run: yarn build:${{ matrix.pkg }}
+          done
+      - run: yarn build:types
       - run: |
-          test -d "${{ steps.pkgdir.outputs.dir }}/dist"
-          test "$(ls -A ${{ steps.pkgdir.outputs.dir }}/dist)"
+          test -d "$PKG_DIR/dist"
+          test "$(ls -A $PKG_DIR/dist)"
       - run: |
-          cd "${{ steps.pkgdir.outputs.dir }}"
+          cd "$PKG_DIR"
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-utils:
+    runs-on: ubuntu-latest
+    name: Publish utils
+    needs: publish-types
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https://registry.npmjs.org
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: npm ping
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Check version and bump if needed
+        run: |
+          PKG_NAME="@3asoftwares/utils"
+          PKG_DIR="utils"
+          VERSION=$(node -p "require('./$PKG_DIR/package.json').version")
+          while npm view "$PKG_NAME@$VERSION" version >/dev/null 2>&1; do
+            echo "Version $VERSION already exists. Bumping patch version..."
+            cd $PKG_DIR
+            npm version patch --no-git-tag-version
+            cd ..
+            VERSION=$(node -p "require('./$PKG_DIR/package.json').version")
+            echo "New version: $VERSION"
+          done
+      - run: yarn build:utils
+      - run: |
+          test -d "$PKG_DIR/dist"
+          test "$(ls -A $PKG_DIR/dist)"
+      - run: |
+          cd "$PKG_DIR"
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-ui:
+    runs-on: ubuntu-latest
+    name: Publish ui
+    needs: publish-utils
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https://registry.npmjs.org
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: npm ping
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Check version and bump if needed
+        run: |
+          PKG_NAME="@3asoftwares/ui"
+          PKG_DIR="ui-library"
+          VERSION=$(node -p "require('./$PKG_DIR/package.json').version")
+          while npm view "$PKG_NAME@$VERSION" version >/dev/null 2>&1; do
+            echo "Version $VERSION already exists. Bumping patch version..."
+            cd $PKG_DIR
+            npm version patch --no-git-tag-version
+            cd ..
+            VERSION=$(node -p "require('./$PKG_DIR/package.json').version")
+            echo "New version: $VERSION"
+          done
+      - run: yarn build:ui
+      - run: |
+          test -d "$PKG_DIR/dist"
+          test "$(ls -A $PKG_DIR/dist)"
+      - run: |
+          cd "$PKG_DIR"
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -62,7 +129,7 @@ jobs:
   storybook:
     runs-on: ubuntu-latest
     name: Deploy Storybook
-    needs: [publish]
+    needs: publish-ui
     permissions:
       contents: read
       pages: write

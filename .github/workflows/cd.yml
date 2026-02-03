@@ -9,11 +9,11 @@ env:
   NODE_VERSION: 18
 
 jobs:
-  # ===================== PUBLISH NPM =====================
   publish:
     name: Publish Packages to npm
     runs-on: ubuntu-latest
 
+    # 🔒 HARD GATES
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.head_branch == 'main'
@@ -24,9 +24,11 @@ jobs:
         pkg: [types, utils, ui]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
@@ -35,30 +37,40 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      # ---------- PRECHECKS ----------
-      - name: Verify npm auth
+      # ===================== PRECHECKS =====================
+      - name: Verify npm authentication
         run: npm whoami
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Ensure version not already published
+      - name: Verify clean git state
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "❌ Working tree is not clean"
+            exit 1
+          fi
+
+      - name: Check version not already published
         run: |
           PKG="@3asoftwares/${{ matrix.pkg }}"
           VERSION=$(node -p "require('./packages/${{ matrix.pkg }}/package.json').version")
 
           if npm view "$PKG@$VERSION" version >/dev/null 2>&1; then
-            echo "❌ $PKG@$VERSION already exists"
+            echo "❌ $PKG@$VERSION already exists on npm"
             exit 1
           fi
 
-      # ---------- BUILD ----------
+      # ===================== BUILD =====================
       - name: Build ${{ matrix.pkg }}
         run: yarn build:${{ matrix.pkg }}
 
-      - name: Verify dist exists
-        run: test -d packages/${{ matrix.pkg }}/dist
+      - name: Verify build output exists
+        run: |
+          test -d packages/${{ matrix.pkg }}/dist || (
+            echo "❌ dist folder missing" && exit 1
+          )
 
-      # ---------- PUBLISH ----------
+      # ===================== PUBLISH =====================
       - name: Publish ${{ matrix.pkg }}
         run: |
           cd packages/${{ matrix.pkg }}
@@ -66,10 +78,11 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  # ===================== STORYBOOK =====================
+  # ===================== STORYBOOK DEPLOY =====================
   storybook:
     name: Deploy Storybook
     runs-on: ubuntu-latest
+    needs: publish
 
     if: >
       github.event.workflow_run.conclusion == 'success' &&
@@ -81,9 +94,11 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
@@ -95,10 +110,15 @@ jobs:
         run: yarn workspace @3asoftwares/ui build-storybook
 
       - name: Verify Storybook output
-        run: test -d packages/ui/storybook-static
+        run: |
+          test -d packages/ui/storybook-static || (
+            echo "Storybook build missing" && exit 1
+          )
 
-      - uses: actions/upload-pages-artifact@v2
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v2
         with:
           path: packages/ui/storybook-static
 
-      - uses: actions/deploy-pages@v2
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2

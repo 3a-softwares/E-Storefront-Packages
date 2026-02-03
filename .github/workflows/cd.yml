@@ -1,5 +1,6 @@
 name: Deploy & Publish
 
+
 on:
   push:
     branches:
@@ -9,158 +10,74 @@ env:
   NODE_VERSION: 18
 
 jobs:
-  publish-types:
-    runs-on: ubuntu-latest
-    name: Publish types
 
+  publish:
+    runs-on: ubuntu-latest
+    name: Publish all packages in parallel
+    strategy:
+      matrix:
+        pkg: [types, utils, ui]
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
           cache: yarn
-
       - run: yarn install --frozen-lockfile
-
       - run: npm ping
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Resolve types package path
-        id: types
+      - name: Set package dir
+        id: pkgdir
         run: |
-          echo "dir=types" >> $GITHUB_OUTPUT
-
-      - name: Check version
+          if [ "${{ matrix.pkg }}" = "ui" ]; then
+            echo "dir=ui-library" >> $GITHUB_OUTPUT
+          else
+            echo "dir=${{ matrix.pkg }}" >> $GITHUB_OUTPUT
+          fi
+      - name: Check version and bump if needed
         run: |
-          VERSION=$(node -p "require('./types/package.json').version")
-          if npm view "@3asoftwares/types@$VERSION" version >/dev/null 2>&1; then exit 1; fi
-
-      - run: yarn build:types
-
+          PKG_NAME="@3asoftwares/${{ matrix.pkg }}"
+          VERSION=$(node -p "require('./${{ steps.pkgdir.outputs.dir }}/package.json').version")
+          if npm view "$PKG_NAME@$VERSION" version >/dev/null 2>&1; then
+            echo "Version $VERSION already exists. Bumping patch version..."
+            cd ${{ steps.pkgdir.outputs.dir }}
+            npm version patch --no-git-tag-version
+            cd ../
+            VERSION=$(node -p "require('./${{ steps.pkgdir.outputs.dir }}/package.json').version")
+            echo "New version: $VERSION"
+          fi
+      - run: yarn build:${{ matrix.pkg }}
       - run: |
-          test -d "${{ steps.types.outputs.dir }}/dist"
-          test "$(ls -A ${{ steps.types.outputs.dir }}/dist)"
-
+          test -d "${{ steps.pkgdir.outputs.dir }}/dist"
+          test "$(ls -A ${{ steps.pkgdir.outputs.dir }}/dist)"
       - run: |
-          cd "${{ steps.types.outputs.dir }}"
+          cd "${{ steps.pkgdir.outputs.dir }}"
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  publish-utils:
-    runs-on: ubuntu-latest
-    name: Publish utils
-    needs: publish-types
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          registry-url: https://registry.npmjs.org
-          cache: yarn
-
-      - run: yarn install --frozen-lockfile
-
-      - run: npm ping
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Resolve utils package path
-        id: utils
-        run: |
-          echo "dir=utils" >> $GITHUB_OUTPUT
-
-      - name: Check version
-        run: |
-          VERSION=$(node -p "require('./utils/package.json').version")
-          if npm view "@3asoftwares/utils@$VERSION" version >/dev/null 2>&1; then exit 1; fi
-
-      - run: yarn build:utils
-
-      - run: |
-          test -d "${{ steps.utils.outputs.dir }}/dist"
-          test "$(ls -A ${{ steps.utils.outputs.dir }}/dist)"
-
-      - run: |
-          cd "${{ steps.utils.outputs.dir }}"
-          npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-  publish-ui:
-    runs-on: ubuntu-latest
-    name: Publish ui
-    needs: publish-utils
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          registry-url: https://registry.npmjs.org
-          cache: yarn
-
-      - run: yarn install --frozen-lockfile
-
-      - run: npm ping
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Resolve ui package path
-        id: ui
-        run: |
-          echo "dir=ui-library" >> $GITHUB_OUTPUT
-
-      - name: Check version
-        run: |
-          VERSION=$(node -p "require('./ui-library/package.json').version")
-          if npm view "@3asoftwares/ui@$VERSION" version >/dev/null 2>&1; then exit 1; fi
-
-      - run: yarn build:ui
-
-      - run: |
-          test -d "${{ steps.ui.outputs.dir }}/dist"
-          test "$(ls -A ${{ steps.ui.outputs.dir }}/dist)"
-
-      - run: |
-          cd "${{ steps.ui.outputs.dir }}"
-          npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   storybook:
     runs-on: ubuntu-latest
     name: Deploy Storybook
-    needs: publish-ui
-
+    needs: [publish]
     permissions:
       contents: read
       pages: write
       id-token: write
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
-
       - run: yarn install --frozen-lockfile
-
       - run: yarn workspace @3asoftwares/ui build-storybook
-
       - run: |
           test -d ui-library/storybook-static
-
       - uses: actions/upload-pages-artifact@v2
         with:
           path: ui-library/storybook-static
-
       - uses: actions/deploy-pages@v2

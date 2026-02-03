@@ -1,9 +1,15 @@
 name: Deploy & Publish
 
+# on:
+#   workflow_run:
+#     workflows: ['CI Pipeline']
+#     types: [completed]
+
 on:
-  workflow_run:
-    workflows: ["CI Pipeline"]
-    types: [completed]
+  push:
+    branches: [main, develop, feature/**]
+  pull_request:
+    branches: [main, develop]
 
 env:
   NODE_VERSION: 18

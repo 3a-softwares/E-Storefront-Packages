@@ -163,18 +163,27 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: 18
           cache: yarn
 
-      - run: yarn install --frozen-lockfile
-      - run: yarn build:types
-      - run: yarn build:utils
-      - run: yarn workspace @3asoftwares/ui build-storybook
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
-      - run: test -d ui-library/storybook-static
+      - name: Build dependencies
+        run: |
+          yarn build:types
+          yarn build:utils
 
-      - uses: actions/upload-pages-artifact@v2
+      - name: Build Storybook
+        run: yarn workspace @3asoftwares/ui build-storybook
+
+      - name: Verify Storybook output
+        run: test -d ui-library/storybook-static
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ui-library/storybook-static
 
-      - uses: actions/deploy-pages@v2
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2

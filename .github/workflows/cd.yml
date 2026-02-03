@@ -1,20 +1,17 @@
 name: Deploy & Publish
 
 on:
-  workflow_run:
-    workflows: ['CI Pipeline']
-    types: [completed]
+  push:
+    branches: [main]
+  # workflow_run:
+  #   workflows: ['CI Pipeline']
+  #   types: [completed]
 
 env:
   NODE_VERSION: 18
 
 jobs:
   build-types:
-    if: >
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main' &&
-      !github.event.workflow_run.pull_requests
     runs-on: ubuntu-latest
     name: Build types
     steps:
@@ -41,8 +38,7 @@ jobs:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main' &&
-      !github.event.workflow_run.pull_requests
+      github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     name: Publish types
     needs: build-types
@@ -98,8 +94,7 @@ jobs:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main' &&
-      !github.event.workflow_run.pull_requests
+      github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     name: Publish utils
     needs: build-types
@@ -155,8 +150,7 @@ jobs:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main' &&
-      !github.event.workflow_run.pull_requests
+      github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     name: Publish ui
     needs: build-types
@@ -214,8 +208,7 @@ jobs:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main' &&
-      !github.event.workflow_run.pull_requests
+      github.event.workflow_run.head_branch == 'main'
     name: Deploy Storybook (gh-pages)
     runs-on: ubuntu-latest
     needs: publish-ui

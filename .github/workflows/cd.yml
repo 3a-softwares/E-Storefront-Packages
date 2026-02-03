@@ -81,7 +81,7 @@ jobs:
 
       - name: Publish types
         if: steps.changed.outputs.changed == 'true' && steps.check.outputs.skip != 'true'
-        run: yarn workspace @3asoftwares/types npm publish --access public
+        run: npx --workspace=@3asoftwares/utils npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -134,7 +134,7 @@ jobs:
 
       - name: Publish utils
         if: steps.changed.outputs.changed == 'true' && steps.check.outputs.skip != 'true'
-        run: yarn workspace @3asoftwares/utils npm publish --access public
+        run: npx --workspace=@3asoftwares/utils npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -189,7 +189,7 @@ jobs:
 
       - name: Publish ui
         if: steps.changed.outputs.changed == 'true' && steps.check.outputs.skip != 'true'
-        run: yarn workspace @3asoftwares/ui npm publish --access public
+        run: npx --workspace=@3asoftwares/ui npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

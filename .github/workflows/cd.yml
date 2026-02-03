@@ -197,13 +197,12 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   storybook:
-    runs-on: ubuntu-latest
     name: Deploy Storybook
+    runs-on: ubuntu-latest
     needs: publish-ui
 
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     permissions:
       contents: read
@@ -211,32 +210,24 @@ jobs:
       id-token: write
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 18
-        cache: yarn
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: yarn
 
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile
 
-    - name: Build dependencies
-      run: |
+      - run: |
           yarn build:types
           yarn build:utils
 
-    - name: Build Storybook
-      run: yarn workspace @3asoftwares/ui build-storybook
+      - run: yarn workspace @3asoftwares/ui build-storybook
+      - run: test -d ui-library/storybook-static
 
-    - name: Verify Storybook output
-      run: test -d ui-library/storybook-static
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ui-library/storybook-static
 
-    - name: Upload Pages artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ui-library/storybook-static
-
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v2
+      - uses: actions/deploy-pages@v2

@@ -26,6 +26,29 @@ const preview: Preview = {
           value: '#f7fafc'
         }
       ]
+    },
+    options: {
+      storySort: {
+        order: [
+          'Home',
+          'Badge',
+          'Button',
+          'Header',
+          'Input',
+          'Modal',
+          'MultiSelect',
+          'Page',
+          'Pagination',
+          'ProductCard',
+          'Radio',
+          'SearchBar',
+          'Select',
+          'Spinner',
+          'Textarea',
+          'Toaster'
+        ],
+        method: 'alphabetical'
+      }
     }
   }
 };

@@ -1,10 +1,5 @@
 import { SHELL_APP_URL } from './constants';
-import {
-  setCookie,
-  getCookie,
-  removeCookie,
-  AUTH_COOKIE_NAMES,
-} from './cookies';
+import { setCookie, getCookie, removeCookie, AUTH_COOKIE_NAMES } from './cookies';
 
 export interface AuthTokens {
   accessToken: string;
@@ -30,18 +25,18 @@ export const storeAuth = (data: {
 }) => {
   // Store user data
   setCookie(AUTH_COOKIE_NAMES.USER, JSON.stringify(data.user), {
-    expires: REFRESH_TOKEN_EXPIRY,
+    expires: REFRESH_TOKEN_EXPIRY
   });
 
   // Store access token
   setCookie(AUTH_COOKIE_NAMES.ACCESS_TOKEN, data.accessToken, {
-    expires: ACCESS_TOKEN_EXPIRY,
+    expires: ACCESS_TOKEN_EXPIRY
   });
 
   // Store refresh token if provided
   if (data.refreshToken) {
     setCookie(AUTH_COOKIE_NAMES.REFRESH_TOKEN, data.refreshToken, {
-      expires: REFRESH_TOKEN_EXPIRY,
+      expires: REFRESH_TOKEN_EXPIRY
     });
   }
 
@@ -49,7 +44,7 @@ export const storeAuth = (data: {
   const expiresIn = data.expiresIn || 3600;
   const expiryTime = new Date().getTime() + expiresIn * 1000;
   setCookie(AUTH_COOKIE_NAMES.TOKEN_EXPIRY, expiryTime.toString(), {
-    expires: ACCESS_TOKEN_EXPIRY,
+    expires: ACCESS_TOKEN_EXPIRY
   });
 };
 
@@ -69,7 +64,7 @@ export const getStoredAuth = (): StoredAuth | null => {
     return {
       user,
       token,
-      expiresIn: Math.max(0, expiresIn),
+      expiresIn: Math.max(0, expiresIn)
     };
   } catch {
     return null;
@@ -147,13 +142,13 @@ export const getRefreshToken = (): string | null => {
 
 export const updateAccessToken = (newToken: string, expiresIn?: number) => {
   setCookie(AUTH_COOKIE_NAMES.ACCESS_TOKEN, newToken, {
-    expires: ACCESS_TOKEN_EXPIRY,
+    expires: ACCESS_TOKEN_EXPIRY
   });
 
   if (expiresIn) {
     const expiryTime = new Date().getTime() + expiresIn * 1000;
     setCookie(AUTH_COOKIE_NAMES.TOKEN_EXPIRY, expiryTime.toString(), {
-      expires: ACCESS_TOKEN_EXPIRY,
+      expires: ACCESS_TOKEN_EXPIRY
     });
   }
 };

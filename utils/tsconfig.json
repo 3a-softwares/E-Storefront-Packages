@@ -2,6 +2,8 @@
   "extends": "./src/config/tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": "src",
+    "strict": true,
+    "noEmit": true,
     "declaration": true,
     "declarationMap": true,
     "outDir": "dist",

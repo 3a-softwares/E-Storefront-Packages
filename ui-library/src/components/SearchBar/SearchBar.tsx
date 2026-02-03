@@ -1,6 +1,4 @@
-
-
-import  { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export interface SearchBarProps {
   value: string;
@@ -19,7 +17,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   placeholder = 'Search products...',
   suggestions = [],
   showSuggestions = false,
-  className = '',
+  className = ''
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -53,7 +51,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         <input
           type="text"
           value={value}
-          onChange={(e:any) => onChange(e.target.value)}
+          onChange={(e: any) => onChange(e.target.value)}
           onFocus={() => setIsFocused(true)}
           placeholder={placeholder}
           className="w-full pl-8 sm:pl-10 pr-10 sm:pr-4 py-2 sm:py-2.5 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-600 text-sm sm:text-base text-gray-900 font-medium min-h-[44px]"

@@ -8,7 +8,7 @@ import {
   isValidPhone,
   validatePhone,
   isValidPostalCode,
-  validatePostalCode,
+  validatePostalCode
 } from '../../src/validation/client';
 
 describe('Validation Utilities - Basic', () => {

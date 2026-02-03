@@ -6,7 +6,7 @@ import {
   validateQuantity,
   validateRating,
   validateDiscountPercentage,
-  validatePagination,
+  validatePagination
 } from '../../src/validation/client';
 
 describe('Validation Utilities - Business', () => {

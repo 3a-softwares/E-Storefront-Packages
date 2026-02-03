@@ -5,14 +5,14 @@ import * as path from 'path';
 export default defineConfig({
   plugins: [react()],
   css: {
-    postcss: path.resolve(__dirname, 'postcss.config.cjs'),
+    postcss: path.resolve(__dirname, 'postcss.config.cjs')
   },
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'ui-library',
-      formats: ['es', 'cjs', 'umd'],
-      fileName: (format) => `ui-library.${format}.js`,
+      formats: ['es', 'cjs'],
+      fileName: format => (format === 'es' ? 'index.mjs' : 'index.js')
     },
     rollupOptions: {
       external: [
@@ -20,7 +20,7 @@ export default defineConfig({
         'react-dom',
         '@fortawesome/fontawesome-svg-core',
         '@fortawesome/free-solid-svg-icons',
-        '@fortawesome/react-fontawesome',
+        '@fortawesome/react-fontawesome'
       ],
       output: {
         globals: {
@@ -28,9 +28,15 @@ export default defineConfig({
           'react-dom': 'ReactDOM',
           '@fortawesome/fontawesome-svg-core': 'FontAwesome',
           '@fortawesome/free-solid-svg-icons': 'FontAwesomeSolid',
-          '@fortawesome/react-fontawesome': 'FontAwesomeReact',
+          '@fortawesome/react-fontawesome': 'FontAwesomeReact'
         },
-      },
-    },
-  },
+        assetFileNames: assetInfo => {
+          if (assetInfo.name === 'style.css') {
+            return 'styles.css';
+          }
+          return assetInfo.name!;
+        }
+      }
+    }
+  }
 });

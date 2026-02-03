@@ -28,7 +28,7 @@ describe('UserRole Enum', () => {
   });
 
   it('should have all roles as lowercase strings', () => {
-    Object.values(UserRole).forEach((role) => {
+    Object.values(UserRole).forEach(role => {
       expect(role).toBe(role.toLowerCase());
     });
   });

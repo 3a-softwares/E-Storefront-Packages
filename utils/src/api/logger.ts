@@ -44,7 +44,7 @@ const LOG_LEVEL_PRIORITY: Record<LogLevel, number> = {
   [LogLevel.DEBUG]: 0,
   [LogLevel.INFO]: 1,
   [LogLevel.WARN]: 2,
-  [LogLevel.ERROR]: 3,
+  [LogLevel.ERROR]: 3
 };
 
 export class Logger {
@@ -132,7 +132,7 @@ export class Logger {
       message,
       timestamp: new Date().toISOString(),
       data,
-      context,
+      context
     };
 
     this.addLog(entry);
@@ -157,7 +157,7 @@ export class Logger {
   }
 
   static getLogs(level?: LogLevel): LogEntry[] {
-    return level ? this.logs.filter((l) => l.level === level) : [...this.logs];
+    return level ? this.logs.filter(l => l.level === level) : [...this.logs];
   }
 
   static clearLogs() {

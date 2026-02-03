@@ -3,5 +3,5 @@ export enum ShippingMethod {
   EXPRESS = 'express',
   NEXT_DAY = 'next_day',
   SAME_DAY = 'same_day',
-  PICKUP = 'pickup',
+  PICKUP = 'pickup'
 }

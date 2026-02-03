@@ -7,9 +7,9 @@ const meta = {
   title: 'Feedback/Modal',
   component: Modal,
   parameters: {
-    layout: 'centered',
+    layout: 'centered'
   },
-  tags: ['autodocs'],
+  tags: ['autodocs']
 } satisfies Meta<typeof Modal>;
 
 export default meta;
@@ -31,8 +31,8 @@ export const Default: Story = {
     title: 'Modal Title',
     isOpen: false,
     onClose: () => {},
-    children: null,
-  },
+    children: null
+  }
 };
 
 export const WithContent: Story = {
@@ -62,8 +62,8 @@ export const WithContent: Story = {
     title: 'Confirm Action',
     isOpen: false,
     onClose: () => {},
-    children: null,
-  },
+    children: null
+  }
 };
 
 export const SmallSize: Story = {
@@ -83,8 +83,8 @@ export const SmallSize: Story = {
     size: 'sm',
     isOpen: false,
     onClose: () => {},
-    children: null,
-  },
+    children: null
+  }
 };
 
 export const LargeSize: Story = {
@@ -107,8 +107,8 @@ export const LargeSize: Story = {
     size: 'lg',
     isOpen: false,
     onClose: () => {},
-    children: null,
-  },
+    children: null
+  }
 };
 
 export const WithoutCloseButton: Story = {
@@ -131,6 +131,6 @@ export const WithoutCloseButton: Story = {
     showCloseButton: false,
     isOpen: false,
     onClose: () => {},
-    children: null,
-  },
+    children: null
+  }
 };

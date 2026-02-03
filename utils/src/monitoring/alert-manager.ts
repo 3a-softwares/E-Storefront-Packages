@@ -50,7 +50,7 @@ export class AlertManager {
       hostname: this.context.hostname || process.env.HOSTNAME,
       version: this.context.version || process.env.APP_VERSION,
       timestamp: new Date().toISOString(),
-      ...details,
+      ...details
     };
   }
 
@@ -146,8 +146,8 @@ export class AlertManager {
       details: {
         database: dbName,
         error: error.message,
-        stack: error.stack,
-      },
+        stack: error.stack
+      }
     });
   }
 
@@ -158,7 +158,7 @@ export class AlertManager {
     await this.recovery(`Database connection restored: ${dbName}`, {
       entityId: `${this.context.service}-db-${dbName}`,
       displayName: `${this.context.service} Database`,
-      details: { database: dbName },
+      details: { database: dbName }
     });
   }
 
@@ -173,8 +173,8 @@ export class AlertManager {
         endpoint,
         latencyMs,
         thresholdMs,
-        percentOver: (((latencyMs - thresholdMs) / thresholdMs) * 100).toFixed(2) + '%',
-      },
+        percentOver: (((latencyMs - thresholdMs) / thresholdMs) * 100).toFixed(2) + '%'
+      }
     });
   }
 
@@ -189,8 +189,8 @@ export class AlertManager {
       details: {
         errorRate: `${(errorRate * 100).toFixed(2)}%`,
         thresholdRate: `${(thresholdRate * 100).toFixed(2)}%`,
-        timeWindow,
-      },
+        timeWindow
+      }
     });
   }
 
@@ -204,8 +204,8 @@ export class AlertManager {
       displayName: `${this.context.service} Memory`,
       details: {
         usagePercent: `${usagePercent.toFixed(1)}%`,
-        thresholdPercent: `${thresholdPercent.toFixed(1)}%`,
-      },
+        thresholdPercent: `${thresholdPercent.toFixed(1)}%`
+      }
     });
   }
 
@@ -218,8 +218,8 @@ export class AlertManager {
       displayName: `${this.context.service} Health`,
       details: {
         checkName,
-        error: error.message,
-      },
+        error: error.message
+      }
     });
   }
 
@@ -230,7 +230,7 @@ export class AlertManager {
     await this.recovery(`Health check passed: ${checkName}`, {
       entityId: `${this.context.service}-health-${checkName}`,
       displayName: `${this.context.service} Health`,
-      details: { checkName },
+      details: { checkName }
     });
   }
 }
@@ -243,7 +243,7 @@ export function createAlertManager(serviceName: string): AlertManager {
     service: serviceName,
     environment: process.env.NODE_ENV || 'development',
     hostname: process.env.HOSTNAME,
-    version: process.env.APP_VERSION,
+    version: process.env.APP_VERSION
   });
 }
 

@@ -19,15 +19,10 @@ export function createNodeVitestConfig(
       coverage: {
         provider: 'v8',
         reporter: ['text', 'json', 'html'],
-        exclude: [
-          'node_modules/**',
-          'dist/**',
-          '**/*.d.ts',
-          ...(options.coverageExclude || []),
-        ],
+        exclude: ['node_modules/**', 'dist/**', '**/*.d.ts', ...(options.coverageExclude || [])]
       },
-      passWithNoTests: true,
-    },
+      passWithNoTests: true
+    }
   });
 }
 
@@ -51,15 +46,10 @@ export function createBrowserVitestConfig(
       coverage: {
         provider: 'v8',
         reporter: ['text', 'json', 'html'],
-        exclude: [
-          'node_modules/**',
-          'dist/**',
-          '**/*.d.ts',
-          ...(options.coverageExclude || []),
-        ],
+        exclude: ['node_modules/**', 'dist/**', '**/*.d.ts', ...(options.coverageExclude || [])]
       },
-      passWithNoTests: true,
-    },
+      passWithNoTests: true
+    }
   });
 }
 

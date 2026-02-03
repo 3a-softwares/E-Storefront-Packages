@@ -5,7 +5,7 @@ import { Select } from '../../src/components/Select/Select';
 const mockOptions = [
   { value: '1', label: 'Option 1' },
   { value: '2', label: 'Option 2' },
-  { value: '3', label: 'Option 3', disabled: true },
+  { value: '3', label: 'Option 3', disabled: true }
 ];
 
 describe('Select', () => {

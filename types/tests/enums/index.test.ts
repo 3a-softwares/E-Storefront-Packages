@@ -7,7 +7,7 @@ import {
   PaymentMethod,
   ShippingMethod,
   LogLevel,
-  ErrorType,
+  ErrorType
 } from '../../src/enums';
 
 describe('Enums Index Exports', () => {

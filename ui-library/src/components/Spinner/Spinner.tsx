@@ -1,5 +1,3 @@
-
-
 export interface SpinnerProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
@@ -10,13 +8,13 @@ const sizeClasses = {
   sm: 'w-4 h-4 sm:w-5 sm:h-5',
   md: 'w-6 h-6 sm:w-8 sm:h-8',
   lg: 'w-10 h-10 sm:w-12 sm:h-12',
-  xl: 'w-12 h-12 sm:w-16 sm:h-16',
+  xl: 'w-12 h-12 sm:w-16 sm:h-16'
 };
 
 export const Spinner: React.FC<SpinnerProps> = ({
   size = 'md',
   className = '',
-  fullScreen = false,
+  fullScreen = false
 }) => {
   const spinner = (
     <svg

@@ -55,7 +55,7 @@ export class Logger {
       message,
       timestamp: new Date().toISOString(),
       data,
-      context,
+      context
     };
 
     this.addLog(entry);
@@ -80,7 +80,7 @@ export class Logger {
   }
 
   static getLogs(level?: LogLevel): LogEntry[] {
-    return level ? this.logs.filter((l) => l.level === level) : [...this.logs];
+    return level ? this.logs.filter(l => l.level === level) : [...this.logs];
   }
 
   static clearLogs() {

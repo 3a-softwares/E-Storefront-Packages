@@ -9,7 +9,7 @@ export * from './api/user.queries';
 // Product queries
 export * from './api/product.queries';
 
-// Order queries  
+// Order queries
 export * from './api/order.queries';
 
 // Coupon queries

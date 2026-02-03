@@ -1,6 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoon, faSun, faRightFromBracket, faRightToBracket, faUserPlus, faBars, faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+  faMoon,
+  faSun,
+  faRightFromBracket,
+  faRightToBracket,
+  faUserPlus,
+  faBars,
+  faTimes,
+  faUser
+} from '@fortawesome/free-solid-svg-icons';
 import { Button } from '../Button/Button';
 import { Select } from '../Select/Select';
 
@@ -39,7 +48,7 @@ export const Header = ({
   onLanguageChange,
   showThemeToggle = true,
   showLanguageSelector = true,
-  languageOptions,
+  languageOptions
 }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -74,7 +83,13 @@ export const Header = ({
         {/* Logo and App Name */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink">
           {logoUrl ? (
-            <img src={logoUrl} alt={appName} width={32} height={32} className="object-contain w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0" />
+            <img
+              src={logoUrl}
+              alt={appName}
+              width={32}
+              height={32}
+              className="object-contain w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0"
+            />
           ) : (
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
               {appName.charAt(0)}
@@ -104,10 +119,12 @@ export const Header = ({
               onChange={onLanguageChange}
               size="sm"
               variant="outline"
-              options={languageOptions || [
-                { value: 'en', label: 'English' },
-                { value: 'hi', label: 'Hindi' },
-              ]}
+              options={
+                languageOptions || [
+                  { value: 'en', label: 'English' },
+                  { value: 'hi', label: 'Hindi' }
+                ]
+              }
               className="min-w-[80px]"
             />
           )}
@@ -126,8 +143,12 @@ export const Header = ({
               {isUserDropdownOpen && (
                 <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50 animate-fade-in">
                   <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Signed in as</p>
-                    <p className="text-sm font-bold text-gray-900 dark:text-white truncate mt-1">{user.name}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">
+                      Signed in as
+                    </p>
+                    <p className="text-sm font-bold text-gray-900 dark:text-white truncate mt-1">
+                      {user.name}
+                    </p>
                   </div>
                   <button
                     onClick={() => {
@@ -144,14 +165,19 @@ export const Header = ({
             </div>
           ) : (
             <>
-                <Button size="sm" onClick={onLogin} variant="outline" className="text-sm !px-3">
-                  <FontAwesomeIcon icon={faRightToBracket} className="mr-1" />
-                  Log In
-                </Button>
-                <Button variant="primary" size="sm" onClick={onCreateAccount} className="text-sm !px-3">
-                  <FontAwesomeIcon icon={faUserPlus} className="mr-1" />
-                  Sign Up
-                </Button>
+              <Button size="sm" onClick={onLogin} variant="outline" className="text-sm !px-3">
+                <FontAwesomeIcon icon={faRightToBracket} className="mr-1" />
+                Log In
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={onCreateAccount}
+                className="text-sm !px-3"
+              >
+                <FontAwesomeIcon icon={faUserPlus} className="mr-1" />
+                Sign Up
+              </Button>
             </>
           )}
         </div>
@@ -175,7 +201,9 @@ export const Header = ({
               {user && (
                 <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
                   <p className="text-sm text-gray-600 dark:text-gray-400">Signed in as</p>
-                  <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{user.name}</p>
+                  <p className="text-sm font-bold text-gray-900 dark:text-white truncate">
+                    {user.name}
+                  </p>
                 </div>
               )}
 
@@ -183,10 +211,12 @@ export const Header = ({
                 {/* Language Selector */}
                 {showLanguageSelector && onLanguageChange && (
                   <div className="px-4 py-3">
-                    <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase">Language</p>
+                    <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase">
+                      Language
+                    </p>
                     <Select
                       value={language}
-                      onChange={(val) => {
+                      onChange={val => {
                         onLanguageChange(val);
                         setIsMenuOpen(false);
                       }}
@@ -195,7 +225,7 @@ export const Header = ({
                       options={[
                         { value: 'en', label: 'English' },
                         { value: 'hi', label: 'Hindi' },
-                        { value: 'ca', label: 'Catalan' },
+                        { value: 'ca', label: 'Catalan' }
                       ]}
                       className="w-full"
                     />
@@ -208,8 +238,13 @@ export const Header = ({
                     onClick={() => handleMenuItemClick(onToggleTheme)}
                     className="w-full flex items-center gap-3 px-4 py-3 text-left text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                   >
-                    <FontAwesomeIcon icon={theme === 'light' ? faMoon : faSun} className="w-5 text-gray-600 dark:text-gray-400" />
-                    <span className="text-sm font-medium">{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
+                    <FontAwesomeIcon
+                      icon={theme === 'light' ? faMoon : faSun}
+                      className="w-5 text-gray-600 dark:text-gray-400"
+                    />
+                    <span className="text-sm font-medium">
+                      {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+                    </span>
                   </button>
                 )}
 
@@ -236,7 +271,10 @@ export const Header = ({
                         onClick={() => handleMenuItemClick(onLogin)}
                         className="w-full flex items-center gap-3 px-4 py-3 text-left text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       >
-                        <FontAwesomeIcon icon={faRightToBracket} className="w-5 text-gray-600 dark:text-gray-400" />
+                        <FontAwesomeIcon
+                          icon={faRightToBracket}
+                          className="w-5 text-gray-600 dark:text-gray-400"
+                        />
                         <span className="text-sm font-medium">Log In</span>
                       </button>
                       <button

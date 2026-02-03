@@ -120,13 +120,13 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'danger'],
+      options: ['primary', 'secondary', 'danger']
     },
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg'],
-    },
-  },
+      options: ['sm', 'md', 'lg']
+    }
+  }
 };
 
 export default meta;
@@ -135,15 +135,15 @@ type Story = StoryObj<typeof Button>;
 export const Primary: Story = {
   args: {
     children: 'Primary Button',
-    variant: 'primary',
-  },
+    variant: 'primary'
+  }
 };
 
 export const Secondary: Story = {
   args: {
     children: 'Secondary Button',
-    variant: 'secondary',
-  },
+    variant: 'secondary'
+  }
 };
 ```
 
@@ -166,7 +166,7 @@ const config: StorybookConfig = {
   stories: ['../src/**/*.stories.@(ts|tsx)'],
   addons: ['@storybook/addon-essentials', '@storybook/addon-interactions', '@storybook/addon-a11y'],
   framework: '@storybook/react-vite',
-  docs: { autodocs: true },
+  docs: { autodocs: true }
 };
 
 export default config;

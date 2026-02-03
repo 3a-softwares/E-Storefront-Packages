@@ -7,6 +7,6 @@ export default createBrowserVitestConfig(__dirname, {
   coverageExclude: [
     'src/components/**/*.stories.tsx',
     'src/components/**/index.ts',
-    'src/**/*.d.ts',
-  ],
+    'src/**/*.d.ts'
+  ]
 });

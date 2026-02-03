@@ -8,7 +8,7 @@ import {
   PRODUCT_CONFIG,
   ORDER_CONFIG,
   COUPON_CONFIG,
-  HTTP_STATUS,
+  HTTP_STATUS
 } from '../../src/constants';
 
 describe('Constants', () => {

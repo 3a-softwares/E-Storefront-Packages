@@ -5,7 +5,7 @@ import { ProductStatus } from '@3asoftwares/types';
 const meta = {
   title: 'Data Display/ProductCard',
   component: ProductCard,
-  tags: ['autodocs'],
+  tags: ['autodocs']
 } satisfies Meta<typeof ProductCard>;
 
 export default meta;
@@ -23,7 +23,15 @@ const mockProduct = {
   inventory: 5,
   rating: 4.5,
   reviewCount: 12,
-  images: [{ id: 'img1', url: 'https://via.placeholder.com/300', alt: 'Demo Product Image', isPrimary: true, order: 0 }],
+  images: [
+    {
+      id: 'img1',
+      url: 'https://via.placeholder.com/300',
+      alt: 'Demo Product Image',
+      isPrimary: true,
+      order: 0
+    }
+  ],
   isFeatured: true,
   isActive: true,
   sellerId: 'seller1',
@@ -35,7 +43,7 @@ const mockProduct = {
   lowStockThreshold: 10,
   totalSold: 0,
   createdAt: new Date(),
-  updatedAt: new Date(),
+  updatedAt: new Date()
 };
 
 export const Grid: Story = { args: { product: mockProduct, variant: 'grid' } };

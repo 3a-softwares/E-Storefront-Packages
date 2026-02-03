@@ -56,16 +56,16 @@ export class SplunkOnCallClient {
       image_url: payload.imageUrl,
       ack_msg: payload.ackMsg,
       ack_author: payload.ackAuthor,
-      ...payload.details,
+      ...payload.details
     };
 
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify(body)
       });
 
       if (!response.ok) {
@@ -93,7 +93,7 @@ export class SplunkOnCallClient {
       entityId,
       entityDisplayName: displayName,
       stateMessage: message,
-      details,
+      details
     });
   }
 
@@ -111,7 +111,7 @@ export class SplunkOnCallClient {
       entityId,
       entityDisplayName: displayName,
       stateMessage: message,
-      details,
+      details
     });
   }
 
@@ -129,7 +129,7 @@ export class SplunkOnCallClient {
       entityId,
       entityDisplayName: displayName,
       stateMessage: message,
-      details,
+      details
     });
   }
 
@@ -147,7 +147,7 @@ export class SplunkOnCallClient {
       entityId,
       entityDisplayName: displayName,
       stateMessage: message,
-      details,
+      details
     });
   }
 
@@ -166,7 +166,7 @@ export class SplunkOnCallClient {
       entityDisplayName: displayName,
       stateMessage: message,
       ackMsg: message,
-      ackAuthor: author,
+      ackAuthor: author
     });
   }
 }
@@ -179,7 +179,7 @@ export function createSplunkOnCallClient(): SplunkOnCallClient {
     apiId: process.env.SPLUNK_ONCALL_API_ID || '',
     apiKey: process.env.SPLUNK_ONCALL_API_KEY || '',
     routingKey: process.env.SPLUNK_ONCALL_ROUTING_KEY || 'default',
-    baseUrl: process.env.SPLUNK_ONCALL_BASE_URL,
+    baseUrl: process.env.SPLUNK_ONCALL_BASE_URL
   };
 
   if (!config.apiId || !config.apiKey) {

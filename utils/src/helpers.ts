@@ -12,13 +12,13 @@ export const capitalizeWords = (str: string): string => {
   if (!str) return '';
   return str
     .split(' ')
-    .map((word) => capitalize(word))
+    .map(word => capitalize(word))
     .join(' ');
 };
 
 export const toTitleCase = (str: string): string => {
   if (!str) return '';
-  return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+  return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 };
 
 export const slugify = (str: string): string => {
@@ -51,7 +51,7 @@ export const truncate = (str: string, length: number, suffix: string = '...'): s
 export const formatCurrency = (amount: number, currency: string = 'USD'): string => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: currency,
+    currency: currency
   }).format(amount);
 };
 
@@ -99,7 +99,7 @@ export const unique = <T>(arr: T[]): T[] => {
 
 export const removeDuplicates = <T extends Record<string, any>>(arr: T[], key: keyof T): T[] => {
   const seen = new Set();
-  return arr.filter((item) => {
+  return arr.filter(item => {
     const value = item[key];
     if (seen.has(value)) return false;
     seen.add(value);
@@ -108,14 +108,17 @@ export const removeDuplicates = <T extends Record<string, any>>(arr: T[], key: k
 };
 
 export const groupBy = <T extends Record<string, any>>(arr: T[], key: keyof T) => {
-  return arr.reduce((result, item) => {
-    const groupKey = String(item[key]);
-    if (!result[groupKey]) {
-      result[groupKey] = [];
-    }
-    result[groupKey].push(item);
-    return result;
-  }, {} as Record<string, T[]>);
+  return arr.reduce(
+    (result, item) => {
+      const groupKey = String(item[key]);
+      if (!result[groupKey]) {
+        result[groupKey] = [];
+      }
+      result[groupKey].push(item);
+      return result;
+    },
+    {} as Record<string, T[]>
+  );
 };
 
 export const sortBy = <T extends Record<string, any>>(
@@ -138,11 +141,11 @@ export const flatten = <T>(arr: T[][]): T[] => {
 };
 
 export const difference = <T>(arr1: T[], arr2: T[]): T[] => {
-  return arr1.filter((item) => !arr2.includes(item));
+  return arr1.filter(item => !arr2.includes(item));
 };
 
 export const intersection = <T>(arr1: T[], arr2: T[]): T[] => {
-  return arr1.filter((item) => arr2.includes(item));
+  return arr1.filter(item => arr2.includes(item));
 };
 
 // ============================================================================
@@ -151,13 +154,13 @@ export const intersection = <T>(arr1: T[], arr2: T[]): T[] => {
 
 export const omit = <T extends Record<string, any>>(obj: T, keys: (keyof T)[]): Partial<T> => {
   const result = { ...obj };
-  keys.forEach((key) => delete result[key]);
+  keys.forEach(key => delete result[key]);
   return result;
 };
 
 export const pick = <T extends Record<string, any>>(obj: T, keys: (keyof T)[]): Partial<T> => {
   const result: Partial<T> = {};
-  keys.forEach((key) => {
+  keys.forEach(key => {
     if (key in obj) {
       result[key] = obj[key];
     }
@@ -168,7 +171,7 @@ export const pick = <T extends Record<string, any>>(obj: T, keys: (keyof T)[]): 
 export const deepMerge = <T extends Record<string, any>>(target: T, source: Partial<T>): T => {
   const result = { ...target } as T;
   for (const key in source) {
-    if (source.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(source, key)) {
       if (typeof source[key] === 'object' && source[key] !== null && !Array.isArray(source[key])) {
         result[key] = deepMerge(
           (target[key] as Record<string, any>) || {},
@@ -268,7 +271,7 @@ export const isPastDate = (date: Date): boolean => {
 // ============================================================================
 
 export const delay = (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms));
 };
 
 export const debounce = <T extends (...args: any[]) => any>(
@@ -330,7 +333,7 @@ export const createApiResponse = <T>(
     success,
     statusCode,
     message: message || (success ? 'Success' : 'Error'),
-    data: data || (success ? {} : null),
+    data: data || (success ? {} : null)
   };
 };
 
@@ -381,7 +384,7 @@ export const formatIndianCompact = (num: number = 0) => {
     '₹' +
     num?.toLocaleString('en-IN', {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      maximumFractionDigits: 2
     })
   );
 };

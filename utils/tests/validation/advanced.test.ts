@@ -8,7 +8,7 @@ import {
   validateSku,
   validateDate,
   validateDateRange,
-  batchValidate,
+  batchValidate
 } from '../../src/validation/client';
 
 describe('Validation Utilities - Advanced', () => {
@@ -129,7 +129,7 @@ describe('Validation Utilities - Advanced', () => {
         const result = batchValidate([
           { valid: false, error: 'Error 1' },
           { valid: true },
-          { valid: false, error: 'Error 2' },
+          { valid: false, error: 'Error 2' }
         ]);
         expect(result.valid).toBe(false);
         expect(result.errors).toEqual(['Error 1', 'Error 2']);

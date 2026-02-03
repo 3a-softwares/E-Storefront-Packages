@@ -7,7 +7,7 @@ const config: Config = {
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
     './src/**/*.stories.{js,ts,jsx,tsx}',
-    './.storybook/**/*.{js,ts,jsx,tsx}',
+    './.storybook/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
     extend: {
@@ -15,12 +15,12 @@ const config: Config = {
         primary: theme.colors.primary,
         secondary: theme.colors.secondary,
         accent: theme.colors.accent,
-        neutral: theme.colors.neutral,
+        neutral: theme.colors.neutral
       },
       fontFamily: {
         sans: theme.typography.fontFamily.sans,
         serif: theme.typography.fontFamily.serif,
-        mono: theme.typography.fontFamily.mono,
+        mono: theme.typography.fontFamily.mono
       },
       fontSize: theme.typography.fontSize,
       fontWeight: theme.typography.fontWeight,
@@ -33,9 +33,9 @@ const config: Config = {
       transitionDuration: {
         fast: '150ms',
         DEFAULT: '250ms',
-        slow: '350ms',
-      },
-    },
+        slow: '350ms'
+      }
+    }
   },
   plugins: [daisyui],
   daisyui: {
@@ -52,7 +52,7 @@ const config: Config = {
           info: '#3b82f6',
           success: '#10b981',
           warning: '#f59e0b',
-          error: '#ef4444',
+          error: '#ef4444'
         },
         dark: {
           primary: '#3b82f6',
@@ -65,12 +65,12 @@ const config: Config = {
           info: '#3b82f6',
           success: '#10b981',
           warning: '#f59e0b',
-          error: '#ef4444',
-        },
-      },
+          error: '#ef4444'
+        }
+      }
     ],
-    logs: false,
-  },
+    logs: false
+  }
 };
 
 export default config;

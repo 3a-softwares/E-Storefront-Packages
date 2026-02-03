@@ -36,15 +36,36 @@ describe('Button', () => {
   it('applies correct size classes', () => {
     const { rerender } = render(<Button size="sm">Small</Button>);
     // Responsive classes: text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-1.5
-    expect(screen.getByRole('button')).toHaveClass('text-xs', 'sm:text-sm', 'px-2', 'sm:px-3', 'py-1', 'sm:py-1.5');
+    expect(screen.getByRole('button')).toHaveClass(
+      'text-xs',
+      'sm:text-sm',
+      'px-2',
+      'sm:px-3',
+      'py-1',
+      'sm:py-1.5'
+    );
 
     rerender(<Button size="md">Medium</Button>);
     // Responsive classes: text-sm sm:text-base px-3 sm:px-4 py-2 sm:py-2.5
-    expect(screen.getByRole('button')).toHaveClass('text-sm', 'sm:text-base', 'px-3', 'sm:px-4', 'py-2', 'sm:py-2.5');
+    expect(screen.getByRole('button')).toHaveClass(
+      'text-sm',
+      'sm:text-base',
+      'px-3',
+      'sm:px-4',
+      'py-2',
+      'sm:py-2.5'
+    );
 
     rerender(<Button size="lg">Large</Button>);
     // Responsive classes: text-base sm:text-lg px-4 sm:px-6 py-3 sm:py-4
-    expect(screen.getByRole('button')).toHaveClass('text-base', 'sm:text-lg', 'px-4', 'sm:px-6', 'py-3', 'sm:py-4');
+    expect(screen.getByRole('button')).toHaveClass(
+      'text-base',
+      'sm:text-lg',
+      'px-4',
+      'sm:px-6',
+      'py-3',
+      'sm:py-4'
+    );
   });
 
   it('handles onClick event', () => {
@@ -90,7 +111,11 @@ describe('Button', () => {
 
   it('does not call onClick when disabled', () => {
     const handleClick = vi.fn();
-    render(<Button disabled onClick={handleClick}>Disabled</Button>);
+    render(
+      <Button disabled onClick={handleClick}>
+        Disabled
+      </Button>
+    );
     fireEvent.click(screen.getByRole('button'));
     expect(handleClick).not.toHaveBeenCalled();
   });

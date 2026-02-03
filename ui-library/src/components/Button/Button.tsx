@@ -21,7 +21,7 @@ export const Button: React.FC<ButtonProps> = ({
   onClick,
   type = 'button',
   fullWidth = true,
-  className = '',
+  className = ''
 }) => {
   const baseClasses =
     'cursor-pointer min-w-fit font-semibold rounded-lg transition-all duration-150 inline-flex items-center justify-center gap-1 disabled:cursor-not-allowed disabled:opacity-50';
@@ -34,13 +34,13 @@ export const Button: React.FC<ButtonProps> = ({
     outline:
       'bg-transparent hover:bg-gray-50 active:bg-gray-100 text-gray-900 border-2 border-gray-600 hover:border-gray-900 focus:ring-gray-500 dark:bg-gray-700 dark:hover:bg-gray-600 dark:active:bg-gray-700 dark:text-white dark:border-gray-700 dark:hover:border-gray-600',
     ghost:
-      'underline bg-transparent hover:bg-gray-100 active:bg-gray-200 text-gray-900 focus:ring-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 dark:active:bg-gray-700 dark:text-white',
+      'underline bg-transparent hover:bg-gray-100 active:bg-gray-200 text-gray-900 focus:ring-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 dark:active:bg-gray-700 dark:text-white'
   };
 
   const sizeClasses = {
     sm: 'text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-1.5 min-h-[32px] sm:min-h-[36px]',
     md: 'text-sm sm:text-base px-3 sm:px-4 py-2 sm:py-2.5 min-h-[40px] sm:min-h-[44px]',
-    lg: 'text-base sm:text-lg px-4 sm:px-6 py-3 sm:py-4 min-h-[48px] sm:min-h-[56px]',
+    lg: 'text-base sm:text-lg px-4 sm:px-6 py-3 sm:py-4 min-h-[48px] sm:min-h-[56px]'
   };
 
   const widthClass = fullWidth ? 'w-full' : '';

@@ -5,21 +5,21 @@ const meta = {
   title: 'Form/Input',
   component: Input,
   parameters: {
-    layout: 'centered',
+    layout: 'centered'
   },
   tags: ['autodocs'],
   argTypes: {
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg'],
+      options: ['sm', 'md', 'lg']
     },
     disabled: {
-      control: 'boolean',
+      control: 'boolean'
     },
     fullWidth: {
-      control: 'boolean',
-    },
-  },
+      control: 'boolean'
+    }
+  }
 } satisfies Meta<typeof Input>;
 
 export default meta;
@@ -27,24 +27,24 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    placeholder: 'Enter text...',
-  },
+    placeholder: 'Enter text...'
+  }
 };
 
 export const WithLabel: Story = {
   args: {
     label: 'Email Address',
     placeholder: 'you@example.com',
-    type: 'email',
-  },
+    type: 'email'
+  }
 };
 
 export const WithHelperText: Story = {
   args: {
     label: 'Username',
     placeholder: 'johndoe',
-    helperText: 'Choose a unique username',
-  },
+    helperText: 'Choose a unique username'
+  }
 };
 
 export const WithError: Story = {
@@ -52,8 +52,8 @@ export const WithError: Story = {
     label: 'Email',
     placeholder: 'you@example.com',
     error: 'Please enter a valid email address',
-    type: 'email',
-  },
+    type: 'email'
+  }
 };
 
 export const WithLeftIcon: Story = {
@@ -69,8 +69,8 @@ export const WithLeftIcon: Story = {
           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
         />
       </svg>
-    ),
-  },
+    )
+  }
 };
 
 export const WithRightIcon: Story = {
@@ -93,41 +93,41 @@ export const WithRightIcon: Story = {
           d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
         />
       </svg>
-    ),
-  },
+    )
+  }
 };
 
 export const Small: Story = {
   args: {
     label: 'Small Input',
     placeholder: 'Small size',
-    size: 'sm',
-  },
+    size: 'sm'
+  }
 };
 
 export const Large: Story = {
   args: {
     label: 'Large Input',
     placeholder: 'Large size',
-    size: 'lg',
-  },
+    size: 'lg'
+  }
 };
 
 export const Disabled: Story = {
   args: {
     label: 'Disabled Input',
     placeholder: 'Cannot edit',
-    disabled: true,
-  },
+    disabled: true
+  }
 };
 
 export const FullWidth: Story = {
   args: {
     label: 'Full Width Input',
     placeholder: 'Takes full width',
-    fullWidth: true,
+    fullWidth: true
   },
   parameters: {
-    layout: 'padded',
-  },
+    layout: 'padded'
+  }
 };

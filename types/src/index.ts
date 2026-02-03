@@ -10,7 +10,7 @@ export type {
   ApiError,
   PaginatedResponse,
   MutationResponse,
-  Address,
+  Address
 } from './common.types';
 
 // User Types
@@ -29,7 +29,7 @@ export type {
   RegisterInput,
   UpdateProfileRequest,
   AuthPayload,
-  AuthResponse,
+  AuthResponse
 } from './user.types';
 
 // Product Types
@@ -49,7 +49,7 @@ export type {
   UpdateProductInput,
   GetProductsRequest,
   GetProductsResponse,
-  GetProductRequest,
+  GetProductRequest
 } from './product.types';
 
 // Order Types
@@ -69,7 +69,7 @@ export type {
   CreateOrderRequest,
   CreateOrderInput,
   UpdateOrderStatusRequest,
-  GetOrdersRequest,
+  GetOrdersRequest
 } from './order.types';
 
 // Coupon Types
@@ -80,7 +80,7 @@ export type {
   CouponConnection,
   CouponQueryVariables,
   CreateCouponInput,
-  UpdateCouponInput,
+  UpdateCouponInput
 } from './coupon.types';
 
 // Category Types
@@ -92,7 +92,7 @@ export type {
   CategoryFilterInput,
   CategoryInput,
   CreateCategoryInput,
-  UpdateCategoryInput,
+  UpdateCategoryInput
 } from './category.types';
 
 // Cart Types
@@ -105,7 +105,7 @@ export type {
   BankAccount,
   SellerDocument,
   SellerPayout,
-  SellerStats,
+  SellerStats
 } from './seller.types';
 
 // Analytics Types
@@ -114,7 +114,7 @@ export type {
   SalesAnalytics,
   SalesData,
   Notification,
-  NotificationSettings,
+  NotificationSettings
 } from './analytics.types';
 
 // Store/State Management Types
@@ -124,7 +124,7 @@ export type {
   Address as StoreAddress,
   WishlistItem,
   RecentlyViewedItem,
-  CartStore,
+  CartStore
 } from './store.types';
 
 // Recoil State Types
@@ -146,7 +146,7 @@ export type {
   CreateOrderResponse,
   CreateOrderInput as HookCreateOrderInput,
   Category as HookCategory,
-  CategoriesData,
+  CategoriesData
 } from './hooks.types';
 
 // Environment Types
@@ -160,7 +160,7 @@ export type {
   NotificationState,
   UIState,
   AdminRootState,
-  AdminAppDispatch,
+  AdminAppDispatch
 } from './admin.types';
 
 // Seller App Types
@@ -172,7 +172,7 @@ export type {
   ProductDraft,
   ProductDraftState,
   SellerRootState,
-  SellerAppDispatch,
+  SellerAppDispatch
 } from './seller.app.types';
 
 // Enums
@@ -197,7 +197,7 @@ export type {
   NotificationOptions,
   AuthTokens,
   StoredAuth,
-  TokenPayload,
+  TokenPayload
 } from './utils.types';
 
 // Service Types (Database Models)
@@ -207,7 +207,7 @@ export type {
   ICoupon,
   OrderItemService,
   IOrder,
-  IUser,
+  IUser
 } from './services.types';
 
 // Storefront Types
@@ -222,5 +222,5 @@ export type {
   ValidateTokenResponse,
   ReviewData,
   ReviewConnection,
-  CreateReviewInput,
+  CreateReviewInput
 } from './storefront.types';

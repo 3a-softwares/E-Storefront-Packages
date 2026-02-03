@@ -1,32 +1,30 @@
 export interface Column<T> {
-  
   header?: string;
-  
+
   label?: string;
-  
+
   accessor?: keyof T;
-  
+
   key?: string;
-  
+
   cell?: (row: T) => React.ReactNode;
-  
+
   render?: (row: T) => React.ReactNode;
 }
 
 export interface TableProps<T> {
-  
   columns: Column<T>[];
-  
+
   data: T[];
-  
+
   loading?: boolean;
-  
+
   emptyMessage?: string;
-  
+
   hoverable?: boolean;
-  
+
   striped?: boolean;
-  
+
   onRowClick?: (row: T) => void;
 }
 
@@ -37,7 +35,7 @@ export function Table<T extends Record<string, any>>({
   emptyMessage = 'No data available',
   hoverable = true,
   striped = false,
-  onRowClick,
+  onRowClick
 }: TableProps<T>) {
   if (loading) {
     return (

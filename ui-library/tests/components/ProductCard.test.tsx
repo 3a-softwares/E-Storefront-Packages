@@ -28,7 +28,7 @@ const mockProduct: Product = {
   sellerName: 'Test Seller',
   lowStockThreshold: 5,
   totalSold: 50,
-  status: 'draft',
+  status: 'draft'
 };
 
 describe('ProductCard', () => {

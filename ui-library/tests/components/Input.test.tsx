@@ -27,15 +27,35 @@ describe('Input', () => {
   it('applies correct size classes', () => {
     const { rerender, container } = render(<Input size="sm" />);
     // Responsive classes: text-xs sm:text-sm px-2 sm:px-3 py-1.5
-    expect(container.querySelector('input')).toHaveClass('text-xs', 'sm:text-sm', 'px-2', 'sm:px-3', 'py-1.5');
+    expect(container.querySelector('input')).toHaveClass(
+      'text-xs',
+      'sm:text-sm',
+      'px-2',
+      'sm:px-3',
+      'py-1.5'
+    );
 
     rerender(<Input size="md" />);
     // Responsive classes: text-sm sm:text-base px-3 sm:px-4 py-2 sm:py-2.5
-    expect(container.querySelector('input')).toHaveClass('text-sm', 'sm:text-base', 'px-3', 'sm:px-4', 'py-2', 'sm:py-2.5');
+    expect(container.querySelector('input')).toHaveClass(
+      'text-sm',
+      'sm:text-base',
+      'px-3',
+      'sm:px-4',
+      'py-2',
+      'sm:py-2.5'
+    );
 
     rerender(<Input size="lg" />);
     // Responsive classes: text-base sm:text-lg px-4 sm:px-6 py-3 sm:py-4
-    expect(container.querySelector('input')).toHaveClass('text-base', 'sm:text-lg', 'px-4', 'sm:px-6', 'py-3', 'sm:py-4');
+    expect(container.querySelector('input')).toHaveClass(
+      'text-base',
+      'sm:text-lg',
+      'px-4',
+      'sm:px-6',
+      'py-3',
+      'sm:py-4'
+    );
   });
 
   it('applies fullWidth class when fullWidth is true', () => {

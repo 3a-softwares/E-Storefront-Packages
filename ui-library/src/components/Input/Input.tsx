@@ -30,21 +30,25 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const sizeClasses = {
       sm: 'text-xs sm:text-sm px-2 sm:px-3 py-1.5 min-h-[36px] sm:min-h-[40px]',
       md: 'text-sm sm:text-base px-3 sm:px-4 py-2 sm:py-2.5 min-h-[40px] sm:min-h-[44px]',
-      lg: 'text-base sm:text-lg px-4 sm:px-6 py-3 sm:py-4 min-h-[48px] sm:min-h-[56px]',
+      lg: 'text-base sm:text-lg px-4 sm:px-6 py-3 sm:py-4 min-h-[48px] sm:min-h-[56px]'
     };
 
     const widthClass = fullWidth ? 'w-full' : '';
     const errorClasses = error
       ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
       : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500';
-    const disabledClasses = disabled ? 'bg-gray-100 cursor-not-allowed text-gray-500' : 'bg-white text-gray-900';
+    const disabledClasses = disabled
+      ? 'bg-gray-100 cursor-not-allowed text-gray-500'
+      : 'bg-white text-gray-900';
     const iconPaddingLeft = leftIcon ? 'pl-10' : '';
     const iconPaddingRight = rightIcon ? 'pr-10' : '';
 
     return (
       <div className={`${widthClass} ${className} mb-6`}>
         {label && (
-          <label className="block text-sm sm:text-[16px] font-semibold text-gray-900 mb-1 sm:mb-1.5 dark:text-white">{label}</label>
+          <label className="block text-sm sm:text-[16px] font-semibold text-gray-900 mb-1 sm:mb-1.5 dark:text-white">
+            {label}
+          </label>
         )}
 
         <div className="relative">

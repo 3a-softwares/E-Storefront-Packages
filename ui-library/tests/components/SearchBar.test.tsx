@@ -7,7 +7,7 @@ describe('SearchBar', () => {
   const mockProps = {
     value: '',
     onChange: vi.fn(),
-    onSearch: vi.fn(),
+    onSearch: vi.fn()
   };
 
   it('renders search input', () => {

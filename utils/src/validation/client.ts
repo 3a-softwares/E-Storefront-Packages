@@ -35,13 +35,13 @@ export const validatePassword = (password: string): { valid: boolean; error?: st
   if (password.length < JWT_CONFIG.PASSWORD_MIN_LENGTH) {
     return {
       valid: false,
-      error: `Password must be at least ${JWT_CONFIG.PASSWORD_MIN_LENGTH} characters`,
+      error: `Password must be at least ${JWT_CONFIG.PASSWORD_MIN_LENGTH} characters`
     };
   }
   if (!isValidPassword(password)) {
     return {
       valid: false,
-      error: 'Password must contain uppercase, lowercase, number, and special character (@$!%*?&)',
+      error: 'Password must contain uppercase, lowercase, number, and special character (@$!%*?&)'
     };
   }
   return { valid: true };
@@ -62,7 +62,7 @@ export const validateName = (name: string): { valid: boolean; error?: string } =
   if (!/^[a-zA-Z\s'-]+$/.test(name)) {
     return {
       valid: false,
-      error: 'Name can only contain letters, spaces, hyphens, and apostrophes',
+      error: 'Name can only contain letters, spaces, hyphens, and apostrophes'
     };
   }
   return { valid: true };
@@ -233,7 +233,7 @@ export const validateSku = (sku: string): { valid: boolean; error?: string } => 
   if (!isValidSku(sku)) {
     return {
       valid: false,
-      error: 'Invalid SKU format (3-20 alphanumeric characters with hyphens)',
+      error: 'Invalid SKU format (3-20 alphanumeric characters with hyphens)'
     };
   }
   return { valid: true };
@@ -282,6 +282,6 @@ export const batchValidate = (
 
   return {
     valid: errors.length === 0,
-    errors,
+    errors
   };
 };

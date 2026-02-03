@@ -4,7 +4,7 @@ import { SearchBar } from '../components/SearchBar';
 const meta = {
   title: 'Form/SearchBar',
   component: SearchBar,
-  tags: ['autodocs'],
+  tags: ['autodocs']
 } satisfies Meta<typeof SearchBar>;
 
 export default meta;
@@ -14,8 +14,8 @@ export const Default: Story = {
   args: {
     value: '',
     onChange: () => {},
-    onSearch: () => {},
-  },
+    onSearch: () => {}
+  }
 };
 
 export const WithPlaceholder: Story = {
@@ -23,14 +23,14 @@ export const WithPlaceholder: Story = {
     value: '',
     onChange: () => {},
     onSearch: () => {},
-    placeholder: 'Search products...',
-  },
+    placeholder: 'Search products...'
+  }
 };
 
 export const WithQuery: Story = {
   args: {
     value: 'laptop',
     onChange: () => {},
-    onSearch: () => {},
-  },
+    onSearch: () => {}
+  }
 };

@@ -7,14 +7,14 @@ const config: StorybookConfig = {
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     '@storybook/addon-links',
-    '@storybook/addon-a11y',
+    '@storybook/addon-a11y'
   ],
   framework: {
     name: '@storybook/react-vite',
-    options: {},
+    options: {}
   },
   docs: {
-    autodocs: 'tag',
+    autodocs: 'tag'
   },
 
   async viteFinal(config) {
@@ -27,11 +27,11 @@ const config: StorybookConfig = {
         if (id.startsWith('file://') && id.includes('mdx-react-shim')) {
           return fileURLToPath(id);
         }
-      },
+      }
     });
 
     return config;
-  },
+  }
 };
 
 export default config;

@@ -13,7 +13,7 @@ export class ErrorHandler {
       return {
         type: ErrorType.NETWORK_ERROR,
         message: 'Unable to connect to the server. Please check your internet connection.',
-        originalError: error,
+        originalError: error
       };
     }
 
@@ -26,7 +26,7 @@ export class ErrorHandler {
             type: ErrorType.AUTHENTICATION_ERROR,
             message: data?.message || 'Authentication failed. Please log in again.',
             statusCode: status,
-            originalError: error,
+            originalError: error
           };
 
         case 403:
@@ -34,7 +34,7 @@ export class ErrorHandler {
             type: ErrorType.AUTHORIZATION_ERROR,
             message: data?.message || 'You do not have permission to perform this action.',
             statusCode: status,
-            originalError: error,
+            originalError: error
           };
 
         case 404:
@@ -42,7 +42,7 @@ export class ErrorHandler {
             type: ErrorType.NOT_FOUND_ERROR,
             message: data?.message || 'The requested resource was not found.',
             statusCode: status,
-            originalError: error,
+            originalError: error
           };
 
         case 422:
@@ -50,7 +50,7 @@ export class ErrorHandler {
             type: ErrorType.VALIDATION_ERROR,
             message: data?.message || 'Invalid input data.',
             statusCode: status,
-            originalError: error,
+            originalError: error
           };
 
         case 500:
@@ -61,7 +61,7 @@ export class ErrorHandler {
             type: ErrorType.SERVER_ERROR,
             message: data?.message || 'A server error occurred. Please try again later.',
             statusCode: status,
-            originalError: error,
+            originalError: error
           };
 
         default:
@@ -69,7 +69,7 @@ export class ErrorHandler {
             type: ErrorType.UNKNOWN_ERROR,
             message: data?.message || 'An unexpected error occurred.',
             statusCode: status,
-            originalError: error,
+            originalError: error
           };
       }
     }
@@ -79,14 +79,14 @@ export class ErrorHandler {
       return {
         type: ErrorType.UNKNOWN_ERROR,
         message: gqlError.message || 'A GraphQL error occurred.',
-        originalError: error,
+        originalError: error
       };
     }
 
     return {
       type: ErrorType.UNKNOWN_ERROR,
       message: error.message || 'An unexpected error occurred.',
-      originalError: error,
+      originalError: error
     };
   }
 
@@ -127,7 +127,7 @@ export class ErrorNotifier {
       this.notifyCallback({
         type: 'error',
         message: handled.message,
-        duration: 5000,
+        duration: 5000
       });
     }
   }
@@ -137,7 +137,7 @@ export class ErrorNotifier {
       this.notifyCallback({
         type: 'success',
         message,
-        duration: 3000,
+        duration: 3000
       });
     }
   }
@@ -147,7 +147,7 @@ export class ErrorNotifier {
       this.notifyCallback({
         type: 'warning',
         message,
-        duration: 4000,
+        duration: 4000
       });
     }
   }
@@ -157,7 +157,7 @@ export class ErrorNotifier {
       this.notifyCallback({
         type: 'info',
         message,
-        duration: 3000,
+        duration: 3000
       });
     }
   }

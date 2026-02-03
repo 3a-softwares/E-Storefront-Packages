@@ -5,7 +5,7 @@ import {
   toTitleCase,
   slugify,
   generateRandomCode,
-  truncate,
+  truncate
 } from '../../src/helpers';
 
 describe('String Utilities', () => {

@@ -7,7 +7,7 @@ import {
   sortBy,
   flatten,
   difference,
-  intersection,
+  intersection
 } from '../../src/helpers';
 
 describe('Array Utilities', () => {
@@ -44,7 +44,7 @@ describe('Array Utilities', () => {
       const arr = [
         { id: 1, name: 'a' },
         { id: 2, name: 'b' },
-        { id: 1, name: 'c' },
+        { id: 1, name: 'c' }
       ];
       expect(removeDuplicates(arr, 'id')).toHaveLength(2);
     });
@@ -52,7 +52,7 @@ describe('Array Utilities', () => {
     it('should keep first occurrence', () => {
       const arr = [
         { id: 1, name: 'first' },
-        { id: 1, name: 'second' },
+        { id: 1, name: 'second' }
       ];
       expect(removeDuplicates(arr, 'id')[0].name).toBe('first');
     });
@@ -63,7 +63,7 @@ describe('Array Utilities', () => {
       const arr = [
         { category: 'a', value: 1 },
         { category: 'b', value: 2 },
-        { category: 'a', value: 3 },
+        { category: 'a', value: 3 }
       ];
       const grouped = groupBy(arr, 'category');
       expect(grouped['a']).toHaveLength(2);

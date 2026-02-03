@@ -6,7 +6,7 @@ import {
   getDaysDifference,
   isDateInRange,
   isFutureDate,
-  isPastDate,
+  isPastDate
 } from '../../src/helpers';
 
 describe('Date Utilities', () => {

@@ -33,7 +33,7 @@ export const Radio: React.FC<RadioProps> = ({
   orientation = 'vertical',
   size = 'md',
   variant = 'default',
-  className = '',
+  className = ''
 }) => {
   const handleChange = (optionValue: string) => {
     if (onChange && !disabled) {
@@ -44,13 +44,13 @@ export const Radio: React.FC<RadioProps> = ({
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-5 h-5',
-    lg: 'w-6 h-6',
+    lg: 'w-6 h-6'
   };
 
   const textSizeClasses = {
     sm: 'text-sm',
     md: 'text-base',
-    lg: 'text-lg',
+    lg: 'text-lg'
   };
 
   const containerClasses = orientation === 'horizontal' ? 'flex flex-wrap gap-3' : 'space-y-3';
@@ -62,7 +62,7 @@ export const Radio: React.FC<RadioProps> = ({
       )}
 
       <div className={containerClasses}>
-        {options.map((option) => {
+        {options.map(option => {
           const isChecked = value === option.value;
           const isDisabled = disabled || option.disabled;
 

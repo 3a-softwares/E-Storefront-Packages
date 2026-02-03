@@ -1,10 +1,13 @@
 {
-  "name": "e-packages",
+  "name": "3asoftwares",
   "version": "1.0.0",
   "description": "Shared packages - types, utils, ui-library",
-  "private": false,
+  "private": true,
+  "type": "module",
   "workspaces": [
-    "packages/*"
+    "types",
+    "utils",
+    "ui-library"
   ],
   "scripts": {
     "build:types": "yarn workspace @3asoftwares/types build",
@@ -17,13 +20,29 @@
     "test": "yarn test:types && yarn test:utils && yarn test:ui",
     "test:coverage": "yarn workspace @3asoftwares/types test -- --coverage && yarn workspace @3asoftwares/utils test -- --coverage && yarn workspace @3asoftwares/ui test -- --coverage",
     "publish": "yarn workspaces foreach --all npm publish",
-    "docs": "yarn workspace @3asoftwares/ui run docs"
+    "docs": "yarn workspace @3asoftwares/ui run docs",
+    "lint": "eslint \"types/src/**/*.{ts,tsx}\" \"utils/src/**/*.{ts,tsx}\" \"ui-library/src/**/*.{ts,tsx}\"",
+    "lint:fix": "eslint \"types/src/**/*.{ts,tsx}\" \"utils/src/**/*.{ts,tsx}\" \"ui-library/src/**/*.{ts,tsx}\" --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json,md,yml,yaml}\""
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "@eslint/js": "^9.39.2",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.5",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.54.0"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "yarn": ">=3.0.0"
+    "node": ">=18.0.0"
+  },
+  "resolutions": {
+    "vite": "4.4.11"
   }
 }

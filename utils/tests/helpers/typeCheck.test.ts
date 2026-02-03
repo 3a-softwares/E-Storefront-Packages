@@ -8,7 +8,7 @@ import {
   isFunction,
   isNull,
   isUndefined,
-  isNullOrUndefined,
+  isNullOrUndefined
 } from '../../src/helpers';
 
 describe('Type Checking Utilities', () => {

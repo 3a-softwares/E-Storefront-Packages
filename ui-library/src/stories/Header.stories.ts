@@ -8,13 +8,13 @@ const meta: Meta<typeof Header> = {
 
   tags: ['autodocs'],
   parameters: {
-    layout: 'fullscreen',
+    layout: 'fullscreen'
   },
   args: {
     onLogin: fn(),
     onLogout: fn(),
-    onCreateAccount: fn(),
-  },
+    onCreateAccount: fn()
+  }
 };
 
 export default meta;
@@ -23,9 +23,9 @@ type Story = StoryObj<typeof meta>;
 export const LoggedIn: Story = {
   args: {
     user: {
-      name: 'Jane Doe',
-    },
-  },
+      name: 'Jane Doe'
+    }
+  }
 };
 
 export const LoggedOut: Story = {};

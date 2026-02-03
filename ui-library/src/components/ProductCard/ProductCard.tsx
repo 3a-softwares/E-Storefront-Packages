@@ -1,5 +1,3 @@
-
-
 import { Product } from '@3asoftwares/types';
 
 export interface ProductCardProps {
@@ -17,9 +15,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onAddToWishlist,
   onQuickView,
   variant = 'grid',
-  showActions = true,
+  showActions = true
 }) => {
-  const primaryImage = product.images.find((img:any) => img.isPrimary) || product.images[0];
+  const primaryImage = product.images.find((img: any) => img.isPrimary) || product.images[0];
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   const discountPercent = hasDiscount
     ? Math.round(((product.compareAtPrice! - product.price) / product.compareAtPrice!) * 100)
@@ -37,11 +35,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <h3 className="text-base sm:text-lg font-bold text-gray-900 hover:text-blue-700 cursor-pointer line-clamp-2">
             {product.name}
           </h3>
-          <p className="text-xs sm:text-sm text-gray-700 line-clamp-2 mt-1">{product.shortDescription}</p>
+          <p className="text-xs sm:text-sm text-gray-700 line-clamp-2 mt-1">
+            {product.shortDescription}
+          </p>
           <div className="flex items-center gap-2 mt-2">
             <div className="flex items-center">
               <span className="text-yellow-500">★</span>
-              <span className="ml-1 text-xs sm:text-sm font-semibold text-gray-900">{product.rating.toFixed(1)}</span>
+              <span className="ml-1 text-xs sm:text-sm font-semibold text-gray-900">
+                {product.rating.toFixed(1)}
+              </span>
               <span className="ml-1 text-xs sm:text-sm text-gray-600">({product.reviewCount})</span>
             </div>
           </div>
@@ -55,7 +57,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   <span className="text-xs sm:text-sm text-gray-600 line-through">
                     ${product.compareAtPrice!.toFixed(2)}
                   </span>
-                  <span className="text-xs sm:text-sm text-green-700 font-bold">-{discountPercent}%</span>
+                  <span className="text-xs sm:text-sm text-green-700 font-bold">
+                    -{discountPercent}%
+                  </span>
                 </>
               )}
             </div>
@@ -154,7 +158,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         <div className="flex items-center justify-between mb-2 sm:mb-3">
           <div className="flex items-center gap-1 sm:gap-2">
-            <span className="text-lg sm:text-xl font-bold text-blue-700">${product.price.toFixed(2)}</span>
+            <span className="text-lg sm:text-xl font-bold text-blue-700">
+              ${product.price.toFixed(2)}
+            </span>
             {hasDiscount && (
               <span className="text-xs sm:text-sm text-gray-600 line-through">
                 ${product.compareAtPrice!.toFixed(2)}

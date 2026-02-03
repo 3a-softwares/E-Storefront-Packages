@@ -26,13 +26,13 @@ const variantClasses = {
   filled:
     'border-0 bg-gray-100 hover:bg-gray-200 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-200',
   underline:
-    'border-0 border-b-2 border-gray-400 bg-transparent hover:border-gray-600 focus-within:border-blue-600',
+    'border-0 border-b-2 border-gray-400 bg-transparent hover:border-gray-600 focus-within:border-blue-600'
 };
 
 const sizeClasses = {
   sm: 'px-2 sm:px-3 py-1.5 text-xs sm:text-sm',
   md: 'px-3 sm:px-4 py-2 text-sm sm:text-base',
-  lg: 'px-4 sm:px-5 py-2.5 sm:py-3 text-base sm:text-lg',
+  lg: 'px-4 sm:px-5 py-2.5 sm:py-3 text-base sm:text-lg'
 };
 
 export const MultiSelect: React.FC<MultiSelectProps> = ({
@@ -45,7 +45,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
   disabled = false,
   error = false,
   maxHeight = '200px',
-  className = '',
+  className = ''
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -53,7 +53,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
     if (disabled) return;
 
     const newValue = value.includes(optionValue)
-      ? value.filter((v) => v !== optionValue)
+      ? value.filter(v => v !== optionValue)
       : [...value, optionValue];
 
     if (onChange) {
@@ -64,11 +64,11 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
   const handleRemove = (optionValue: string, e: React.MouseEvent) => {
     e.stopPropagation();
     if (onChange) {
-      onChange(value.filter((v) => v !== optionValue));
+      onChange(value.filter(v => v !== optionValue));
     }
   };
 
-  const selectedLabels = options.filter((opt) => value.includes(opt.value)).map((opt) => opt.label);
+  const selectedLabels = options.filter(opt => value.includes(opt.value)).map(opt => opt.label);
 
   const errorClasses = error
     ? 'border-red-500 focus-within:border-red-500 focus-within:ring-red-200'
@@ -110,7 +110,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
           style={{ maxHeight }}
         >
           <div className="overflow-auto" style={{ maxHeight }}>
-            {options.map((option) => (
+            {options.map(option => (
               <label
                 key={option.value}
                 className={`flex items-center px-4 py-2 hover:bg-blue-50 cursor-pointer text-gray-900 font-medium ${

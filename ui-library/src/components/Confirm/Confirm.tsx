@@ -24,7 +24,7 @@ export const Confirm: React.FC<ConfirmProps> = ({
   onConfirm,
   onCancel,
   loading = false,
-  loadingText = 'Processing...',
+  loadingText = 'Processing...'
 }) => {
   if (!open) return null;
   return (
@@ -32,9 +32,13 @@ export const Confirm: React.FC<ConfirmProps> = ({
       <div className="bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 w-full max-w-[95vw] sm:max-w-sm border border-gray-200 dark:border-gray-700 animate-fade-in">
         <div className="flex items-center gap-2 mb-3 sm:mb-4">
           <FontAwesomeIcon icon={faExclamationCircle} className="w-4 h-4 sm:w-5 sm:h-5" />
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">{title}</h3>
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
+            {title}
+          </h3>
         </div>
-        <p className="mb-4 sm:mb-6 text-sm sm:text-base text-gray-700 dark:text-gray-200 leading-relaxed">{message}</p>
+        <p className="mb-4 sm:mb-6 text-sm sm:text-base text-gray-700 dark:text-gray-200 leading-relaxed">
+          {message}
+        </p>
         <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 justify-end">
           <Button variant="outline" size="sm" onClick={onCancel} disabled={loading}>
             {cancelText}

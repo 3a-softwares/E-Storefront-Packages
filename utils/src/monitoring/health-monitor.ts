@@ -65,7 +65,7 @@ export class HealthMonitor {
         name: check.name,
         healthy,
         latencyMs,
-        lastChecked: new Date(),
+        lastChecked: new Date()
       };
     } catch (error) {
       const latencyMs = Date.now() - startTime;
@@ -74,7 +74,7 @@ export class HealthMonitor {
         healthy: false,
         latencyMs,
         error: error instanceof Error ? error.message : String(error),
-        lastChecked: new Date(),
+        lastChecked: new Date()
       };
     }
   }
@@ -172,7 +172,7 @@ export class HealthMonitor {
     if (this.results.size === 0) {
       return true; // No checks run yet
     }
-    return Array.from(this.results.values()).every((r) => r.healthy);
+    return Array.from(this.results.values()).every(r => r.healthy);
   }
 
   /**
@@ -186,15 +186,15 @@ export class HealthMonitor {
     checks: HealthCheckResult[];
   } {
     const results = this.getResults();
-    const passingChecks = results.filter((r) => r.healthy).length;
-    const failingChecks = results.filter((r) => !r.healthy).length;
+    const passingChecks = results.filter(r => r.healthy).length;
+    const failingChecks = results.filter(r => !r.healthy).length;
 
     return {
       healthy: this.isHealthy(),
       totalChecks: results.length,
       passingChecks,
       failingChecks,
-      checks: results,
+      checks: results
     };
   }
 
@@ -202,7 +202,7 @@ export class HealthMonitor {
    * Run a single check manually
    */
   async runCheckManually(checkName: string): Promise<HealthCheckResult | null> {
-    const check = this.config.checks.find((c) => c.name === checkName);
+    const check = this.config.checks.find(c => c.name === checkName);
     if (!check) {
       console.warn(`Health check not found: ${checkName}`);
       return null;
@@ -237,7 +237,7 @@ export class HealthMonitor {
       this.intervals.delete(checkName);
     }
 
-    this.config.checks = this.config.checks.filter((c) => c.name !== checkName);
+    this.config.checks = this.config.checks.filter(c => c.name !== checkName);
     this.results.delete(checkName);
     this.previousHealth.delete(checkName);
   }
@@ -255,7 +255,7 @@ export const HealthChecks = {
     check: async () => {
       const response = await fetch(url, { method: 'HEAD' });
       return response.status === expectedStatus;
-    },
+    }
   }),
 
   /**
@@ -265,7 +265,7 @@ export const HealthChecks = {
     name,
     check: async () => {
       return mongoose.connection.readyState === 1;
-    },
+    }
   }),
 
   /**
@@ -276,7 +276,7 @@ export const HealthChecks = {
     check: async () => {
       const result = await redisClient.ping();
       return result === 'PONG';
-    },
+    }
   }),
 
   /**
@@ -288,7 +288,7 @@ export const HealthChecks = {
       const used = process.memoryUsage();
       const heapUsedPercent = (used.heapUsed / used.heapTotal) * 100;
       return heapUsedPercent < thresholdPercent;
-    },
+    }
   }),
 
   /**
@@ -296,8 +296,8 @@ export const HealthChecks = {
    */
   custom: (name: string, checkFn: () => Promise<boolean>): HealthCheck => ({
     name,
-    check: checkFn,
-  }),
+    check: checkFn
+  })
 };
 
 /**
@@ -313,7 +313,7 @@ export function createHealthMonitor(
     checks,
     defaultInterval: options?.defaultInterval || 30000,
     defaultTimeout: options?.defaultTimeout || 5000,
-    onHealthChange: options?.onHealthChange,
+    onHealthChange: options?.onHealthChange
   });
 }
 

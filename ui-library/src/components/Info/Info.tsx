@@ -23,9 +23,13 @@ export const Info: React.FC<InfoProps> = ({ open, title = 'Info', message, onClo
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01" />
           </svg>
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">{title}</h3>
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
+            {title}
+          </h3>
         </div>
-        <p className="mb-4 sm:mb-6 text-sm sm:text-base text-gray-700 dark:text-gray-200 leading-relaxed">{message}</p>
+        <p className="mb-4 sm:mb-6 text-sm sm:text-base text-gray-700 dark:text-gray-200 leading-relaxed">
+          {message}
+        </p>
         <div className="flex justify-end">
           <Button variant="primary" size="sm" onClick={onClose}>
             OK

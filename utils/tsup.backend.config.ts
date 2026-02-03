@@ -7,12 +7,12 @@ export default defineConfig([
   {
     entry: {
       index: 'src/backend.ts', // Uses backend.ts instead of index.ts to avoid axios
-      server: 'src/validation/server.ts',
+      server: 'src/validation/server.ts'
     },
     format: ['cjs', 'esm'],
     dts: true,
     clean: true,
     splitting: false,
-    external: ['express', 'express-validator', '@3asoftwares/types'],
-  },
+    external: ['express', 'express-validator', '@3asoftwares/types']
+  }
 ]);

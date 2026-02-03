@@ -30,17 +30,16 @@ export class GraphQLClient {
       baseURL: config.url,
       headers: {
         'Content-Type': 'application/json',
-        ...config.headers,
-      },
+        ...config.headers
+      }
     });
 
     this.setupInterceptors();
   }
 
   private setupInterceptors(): void {
-    
     this.client.interceptors.request.use(
-      (config) => {
+      config => {
         if (typeof window !== 'undefined') {
           const token = localStorage.getItem(this.tokenStorageKey);
           if (token) {
@@ -49,14 +48,13 @@ export class GraphQLClient {
         }
         return config;
       },
-      (error) => {
+      error => {
         return Promise.reject(error);
       }
     );
 
     this.client.interceptors.response.use(
-      (response) => {
-        
+      response => {
         if (response.data.errors && response.data.errors.length > 0) {
           const error = new Error(response.data.errors[0].message);
           if (this.onError) {
@@ -66,7 +64,7 @@ export class GraphQLClient {
         }
         return response;
       },
-      (error) => {
+      error => {
         if (this.onError) {
           this.onError(error);
         }

@@ -50,7 +50,7 @@ describe('OrderStatus Enum', () => {
       OrderStatus.PROCESSING,
       OrderStatus.SHIPPED,
       OrderStatus.OUT_FOR_DELIVERY,
-      OrderStatus.DELIVERED,
+      OrderStatus.DELIVERED
     ];
     expect(lifecycle).toHaveLength(6);
   });
@@ -60,9 +60,9 @@ describe('OrderStatus Enum', () => {
       OrderStatus.DELIVERED,
       OrderStatus.CANCELLED,
       OrderStatus.RETURNED,
-      OrderStatus.REFUNDED,
+      OrderStatus.REFUNDED
     ];
-    terminalStatuses.forEach((status) => {
+    terminalStatuses.forEach(status => {
       expect(Object.values(OrderStatus)).toContain(status);
     });
   });

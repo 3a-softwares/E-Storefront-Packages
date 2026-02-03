@@ -8,8 +8,8 @@ const meta = {
   title: 'Example/Page',
   component: Page,
   parameters: {
-    layout: 'fullscreen',
-  },
+    layout: 'fullscreen'
+  }
 } satisfies Meta<typeof Page>;
 
 export default meta;
@@ -27,5 +27,5 @@ export const LoggedIn: Story = {
 
     const logoutButton = canvas.getByRole('button', { name: /Log out/i });
     await expect(logoutButton).toBeInTheDocument();
-  },
+  }
 };

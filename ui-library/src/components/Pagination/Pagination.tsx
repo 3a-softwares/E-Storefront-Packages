@@ -1,5 +1,3 @@
-
-
 export interface PaginationProps {
   currentPage: number;
   totalPages: number;
@@ -13,7 +11,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   totalPages,
   onPageChange,
   showPages = 5,
-  className = '',
+  className = ''
 }) => {
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];

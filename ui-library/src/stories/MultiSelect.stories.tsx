@@ -6,9 +6,9 @@ const meta: Meta<typeof MultiSelect> = {
   title: 'Form/MultiSelect',
   component: MultiSelect,
   parameters: {
-    layout: 'centered',
+    layout: 'centered'
   },
-  tags: ['autodocs'],
+  tags: ['autodocs']
 };
 
 export default meta;
@@ -22,14 +22,14 @@ const countries = [
   { value: 'de', label: 'Germany' },
   { value: 'fr', label: 'France' },
   { value: 'jp', label: 'Japan' },
-  { value: 'in', label: 'India' },
+  { value: 'in', label: 'India' }
 ];
 
 export const Default: Story = {
   args: {
     options: countries,
-    placeholder: 'Select countries',
-  },
+    placeholder: 'Select countries'
+  }
 };
 
 export const Variants: Story = {
@@ -39,7 +39,7 @@ export const Variants: Story = {
       <MultiSelect options={countries} variant="filled" placeholder="Filled" />
       <MultiSelect options={countries} variant="underline" placeholder="Underline" />
     </div>
-  ),
+  )
 };
 
 export const Sizes: Story = {
@@ -49,7 +49,7 @@ export const Sizes: Story = {
       <MultiSelect options={countries} size="md" placeholder="Medium" />
       <MultiSelect options={countries} size="lg" placeholder="Large" />
     </div>
-  ),
+  )
 };
 
 export const States: Story = {
@@ -59,7 +59,7 @@ export const States: Story = {
       <MultiSelect options={countries} error placeholder="Error state" />
       <MultiSelect options={countries} disabled placeholder="Disabled" />
     </div>
-  ),
+  )
 };
 
 export const WithDisabledOptions: Story = {
@@ -69,18 +69,18 @@ export const WithDisabledOptions: Story = {
       { value: 'uk', label: 'United Kingdom', disabled: true },
       { value: 'ca', label: 'Canada' },
       { value: 'au', label: 'Australia', disabled: true },
-      { value: 'de', label: 'Germany' },
+      { value: 'de', label: 'Germany' }
     ],
-    placeholder: 'Select countries',
-  },
+    placeholder: 'Select countries'
+  }
 };
 
 export const PreSelected: Story = {
   args: {
     options: countries,
     value: ['us', 'uk', 'ca'],
-    placeholder: 'Select countries',
-  },
+    placeholder: 'Select countries'
+  }
 };
 
 export const Controlled: Story = {
@@ -99,13 +99,13 @@ export const Controlled: Story = {
         </p>
       </div>
     );
-  },
+  }
 };
 
 export const CustomMaxHeight: Story = {
   args: {
     options: countries,
     maxHeight: '150px',
-    placeholder: 'Select countries (custom height)',
-  },
+    placeholder: 'Select countries (custom height)'
+  }
 };

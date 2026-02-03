@@ -7,7 +7,7 @@ const mockOptions = [
   { value: '1', label: 'Option 1' },
   { value: '2', label: 'Option 2' },
   { value: '3', label: 'Option 3' },
-  { value: '4', label: 'Option 4', disabled: true },
+  { value: '4', label: 'Option 4', disabled: true }
 ];
 
 describe('MultiSelect', () => {
@@ -31,7 +31,7 @@ describe('MultiSelect', () => {
     render(<MultiSelect options={mockOptions} />);
     const container = screen.getByText('Select options').parentElement;
     await userEvent.click(container!);
-    
+
     const allOption1 = screen.getAllByText('Option 1');
     expect(allOption1.length).toBeGreaterThan(0);
   });
@@ -60,15 +60,34 @@ describe('MultiSelect', () => {
   it('applies correct size classes', () => {
     const { rerender, container } = render(<MultiSelect options={mockOptions} size="sm" />);
     // Responsive classes: px-2 sm:px-3 py-1.5 text-xs sm:text-sm
-    expect(container.firstChild?.firstChild).toHaveClass('px-2', 'sm:px-3', 'py-1.5', 'text-xs', 'sm:text-sm');
+    expect(container.firstChild?.firstChild).toHaveClass(
+      'px-2',
+      'sm:px-3',
+      'py-1.5',
+      'text-xs',
+      'sm:text-sm'
+    );
 
     rerender(<MultiSelect options={mockOptions} size="md" />);
     // Responsive classes: px-3 sm:px-4 py-2 text-sm sm:text-base
-    expect(container.firstChild?.firstChild).toHaveClass('px-3', 'sm:px-4', 'py-2', 'text-sm', 'sm:text-base');
+    expect(container.firstChild?.firstChild).toHaveClass(
+      'px-3',
+      'sm:px-4',
+      'py-2',
+      'text-sm',
+      'sm:text-base'
+    );
 
     rerender(<MultiSelect options={mockOptions} size="lg" />);
     // Responsive classes: px-4 sm:px-5 py-2.5 sm:py-3 text-base sm:text-lg
-    expect(container.firstChild?.firstChild).toHaveClass('px-4', 'sm:px-5', 'py-2.5', 'sm:py-3', 'text-base', 'sm:text-lg');
+    expect(container.firstChild?.firstChild).toHaveClass(
+      'px-4',
+      'sm:px-5',
+      'py-2.5',
+      'sm:py-3',
+      'text-base',
+      'sm:text-lg'
+    );
   });
 
   it('applies correct variant classes', () => {

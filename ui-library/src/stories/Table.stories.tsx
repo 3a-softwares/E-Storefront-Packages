@@ -5,9 +5,9 @@ const meta = {
   title: 'Data Display/Table',
   component: Table,
   parameters: {
-    layout: 'padded',
+    layout: 'padded'
   },
-  tags: ['autodocs'],
+  tags: ['autodocs']
 } satisfies Meta<typeof Table>;
 
 export default meta;
@@ -25,7 +25,7 @@ const sampleData: User[] = [
   { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin', status: 'Active' },
   { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User', status: 'Active' },
   { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'User', status: 'Inactive' },
-  { id: 4, name: 'Alice Brown', email: 'alice@example.com', role: 'Manager', status: 'Active' },
+  { id: 4, name: 'Alice Brown', email: 'alice@example.com', role: 'Manager', status: 'Active' }
 ];
 
 export const Default: Story = {
@@ -35,10 +35,10 @@ export const Default: Story = {
       { header: 'Name', accessor: 'name' },
       { header: 'Email', accessor: 'email' },
       { header: 'Role', accessor: 'role' },
-      { header: 'Status', accessor: 'status' },
+      { header: 'Status', accessor: 'status' }
     ],
-    data: sampleData,
-  },
+    data: sampleData
+  }
 };
 
 export const WithCustomCells: Story = {
@@ -58,11 +58,11 @@ export const WithCustomCells: Story = {
           >
             {row.status}
           </span>
-        ),
-      },
+        )
+      }
     ],
-    data: sampleData,
-  },
+    data: sampleData
+  }
 };
 
 export const Hoverable: Story = {
@@ -71,11 +71,11 @@ export const Hoverable: Story = {
       { header: 'ID', accessor: 'id' },
       { header: 'Name', accessor: 'name' },
       { header: 'Email', accessor: 'email' },
-      { header: 'Role', accessor: 'role' },
+      { header: 'Role', accessor: 'role' }
     ],
     data: sampleData,
-    hoverable: true,
-  },
+    hoverable: true
+  }
 };
 
 export const Striped: Story = {
@@ -84,11 +84,11 @@ export const Striped: Story = {
       { header: 'ID', accessor: 'id' },
       { header: 'Name', accessor: 'name' },
       { header: 'Email', accessor: 'email' },
-      { header: 'Role', accessor: 'role' },
+      { header: 'Role', accessor: 'role' }
     ],
     data: sampleData,
-    striped: true,
-  },
+    striped: true
+  }
 };
 
 export const Loading: Story = {
@@ -96,11 +96,11 @@ export const Loading: Story = {
     columns: [
       { header: 'ID', accessor: 'id' },
       { header: 'Name', accessor: 'name' },
-      { header: 'Email', accessor: 'email' },
+      { header: 'Email', accessor: 'email' }
     ],
     data: [],
-    loading: true,
-  },
+    loading: true
+  }
 };
 
 export const Empty: Story = {
@@ -108,9 +108,9 @@ export const Empty: Story = {
     columns: [
       { header: 'ID', accessor: 'id' },
       { header: 'Name', accessor: 'name' },
-      { header: 'Email', accessor: 'email' },
+      { header: 'Email', accessor: 'email' }
     ],
     data: [],
-    emptyMessage: 'No users found',
-  },
+    emptyMessage: 'No users found'
+  }
 };

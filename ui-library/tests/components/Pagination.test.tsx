@@ -6,7 +6,7 @@ describe('Pagination', () => {
   const mockProps = {
     currentPage: 1,
     totalPages: 10,
-    onPageChange: vi.fn(),
+    onPageChange: vi.fn()
   };
 
   // Helper to get nav buttons (they have responsive text with hidden spans)

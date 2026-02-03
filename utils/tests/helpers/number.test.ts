@@ -6,7 +6,7 @@ import {
   roundDown,
   calculatePercentage,
   calculateDiscount,
-  calculateTax,
+  calculateTax
 } from '../../src/helpers';
 
 describe('Number Utilities', () => {

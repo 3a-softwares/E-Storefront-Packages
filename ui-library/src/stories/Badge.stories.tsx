@@ -8,16 +8,16 @@ const meta: Meta<typeof Badge> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'success', 'warning', 'error', 'info'],
+      options: ['primary', 'secondary', 'success', 'warning', 'error', 'info']
     },
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg'],
+      options: ['sm', 'md', 'lg']
     },
     children: {
-      control: 'text',
-    },
-  },
+      control: 'text'
+    }
+  }
 };
 
 export default meta;
@@ -27,69 +27,69 @@ export const Primary: Story = {
   args: {
     children: 'Primary Badge',
     variant: 'primary',
-    size: 'md',
-  },
+    size: 'md'
+  }
 };
 
 export const Secondary: Story = {
   args: {
     children: 'Secondary Badge',
-    variant: 'secondary',
-  },
+    variant: 'secondary'
+  }
 };
 
 export const Success: Story = {
   args: {
     children: 'Success',
-    variant: 'success',
-  },
+    variant: 'success'
+  }
 };
 
 export const Warning: Story = {
   args: {
     children: 'Warning',
-    variant: 'warning',
-  },
+    variant: 'warning'
+  }
 };
 
 export const Error: Story = {
   args: {
     children: 'Error',
-    variant: 'error',
-  },
+    variant: 'error'
+  }
 };
 
 export const Info: Story = {
   args: {
     children: 'Info',
-    variant: 'info',
-  },
+    variant: 'info'
+  }
 };
 
 export const Small: Story = {
   args: {
     children: 'Small Badge',
-    size: 'sm',
-  },
+    size: 'sm'
+  }
 };
 
 export const Medium: Story = {
   args: {
     children: 'Medium Badge',
-    size: 'md',
-  },
+    size: 'md'
+  }
 };
 
 export const Large: Story = {
   args: {
     children: 'Large Badge',
-    size: 'lg',
-  },
+    size: 'lg'
+  }
 };
 
 export const CustomClass: Story = {
   args: {
     children: 'Custom Badge',
-    className: 'uppercase tracking-wide',
-  },
+    className: 'uppercase tracking-wide'
+  }
 };

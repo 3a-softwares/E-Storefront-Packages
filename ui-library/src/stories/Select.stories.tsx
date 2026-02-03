@@ -6,9 +6,9 @@ const meta: Meta<typeof Select> = {
   title: 'Form/Select',
   component: Select,
   parameters: {
-    layout: 'centered',
+    layout: 'centered'
   },
-  tags: ['autodocs'],
+  tags: ['autodocs']
 };
 
 export default meta;
@@ -19,14 +19,14 @@ const countries = [
   { value: 'uk', label: 'United Kingdom' },
   { value: 'ca', label: 'Canada' },
   { value: 'au', label: 'Australia' },
-  { value: 'de', label: 'Germany' },
+  { value: 'de', label: 'Germany' }
 ];
 
 export const Default: Story = {
   args: {
     options: countries,
-    placeholder: 'Select a country',
-  },
+    placeholder: 'Select a country'
+  }
 };
 
 export const Variants: Story = {
@@ -36,7 +36,7 @@ export const Variants: Story = {
       <Select options={countries} variant="filled" placeholder="Filled" />
       <Select options={countries} variant="underline" placeholder="Underline" />
     </div>
-  ),
+  )
 };
 
 export const Sizes: Story = {
@@ -46,7 +46,7 @@ export const Sizes: Story = {
       <Select options={countries} size="md" placeholder="Medium" />
       <Select options={countries} size="lg" placeholder="Large" />
     </div>
-  ),
+  )
 };
 
 export const States: Story = {
@@ -56,7 +56,7 @@ export const States: Story = {
       <Select options={countries} error placeholder="Error state" />
       <Select options={countries} disabled placeholder="Disabled" />
     </div>
-  ),
+  )
 };
 
 export const WithDisabledOptions: Story = {
@@ -65,10 +65,10 @@ export const WithDisabledOptions: Story = {
       { value: 'us', label: 'United States' },
       { value: 'uk', label: 'United Kingdom', disabled: true },
       { value: 'ca', label: 'Canada' },
-      { value: 'au', label: 'Australia', disabled: true },
+      { value: 'au', label: 'Australia', disabled: true }
     ],
-    placeholder: 'Select a country',
-  },
+    placeholder: 'Select a country'
+  }
 };
 
 export const Controlled: Story = {
@@ -85,5 +85,5 @@ export const Controlled: Story = {
         <p className="text-sm text-gray-600">Selected: {value || 'None'}</p>
       </div>
     );
-  },
+  }
 };

@@ -15,7 +15,7 @@ export const PORT_CONFIG = {
   SHELL: 3000,
   ADMIN: 3001,
   SELLER: 3002,
-  SUPPORT: 3003,
+  SUPPORT: 3003
 };
 
 // SERVICE URLS
@@ -26,13 +26,13 @@ export const SERVICE_URLS = {
   PRODUCT_SERVICE: `http://localhost:${PORT_CONFIG.PRODUCT}`,
   ORDER_SERVICE: `http://localhost:${PORT_CONFIG.ORDER}`,
   TICKET_SERVICE: `http://localhost:${PORT_CONFIG.TICKET}`,
-  GRAPHQL_GATEWAY: `http://localhost:${PORT_CONFIG.GRAPHQL}/graphql`,
+  GRAPHQL_GATEWAY: `http://localhost:${PORT_CONFIG.GRAPHQL}/graphql`
 };
 
 // DATABASE CONFIGURATION
 export const DATABASE_CONFIG = {
   REDIS_URL: 'redis://localhost:6379',
-  MONGODB_URL: 'mongodb://localhost:27017/ecommerce',
+  MONGODB_URL: 'mongodb://localhost:27017/ecommerce'
 };
 
 // CORS ALLOWED ORIGINS
@@ -42,7 +42,7 @@ export const DEFAULT_CORS_ORIGINS = [
   'http://localhost:3002',
   'http://localhost:3003',
   'http://localhost:3004',
-  'http://localhost:8081',
+  'http://localhost:8081'
 ];
 
 // JWT & AUTH CONFIGURATION
@@ -50,7 +50,7 @@ export const JWT_CONFIG = {
   ACCESS_TOKEN_EXPIRY: '1h',
   REFRESH_TOKEN_EXPIRY: '7d',
   PASSWORD_MIN_LENGTH: 8,
-  PASSWORD_PATTERN: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+  PASSWORD_PATTERN: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 };
 
 // PAGINATION CONFIGURATION
@@ -61,7 +61,7 @@ export const PAGINATION = {
   MAX_PAGE_SIZE: 100,
   MIN_PAGE_SIZE: 1,
   DEFAULT_SORT_BY: 'createdAt',
-  DEFAULT_SORT_ORDER: 'DESC' as const,
+  DEFAULT_SORT_ORDER: 'DESC' as const
 };
 
 // PRODUCT CONFIGURATION
@@ -73,7 +73,7 @@ export const PRODUCT_CONFIG = {
   MIN_RATING: 0,
   DEFAULT_RATING: 0,
   MAX_IMAGE_SIZE: 5 * 1024 * 1024, // 5MB
-  ALLOWED_IMAGE_TYPES: ['image/jpeg', 'image/png', 'image/webp'],
+  ALLOWED_IMAGE_TYPES: ['image/jpeg', 'image/png', 'image/webp']
 };
 
 // ORDER CONFIGURATION
@@ -83,7 +83,7 @@ export const ORDER_CONFIG = {
   SHIPPING_COST_EXPRESS: 150,
   SHIPPING_COST_OVERNIGHT: 300,
   MIN_ORDER_AMOUNT: 0,
-  MAX_ORDER_ITEMS: 1000,
+  MAX_ORDER_ITEMS: 1000
 };
 
 // COUPON CONFIGURATION
@@ -92,7 +92,7 @@ export const COUPON_CONFIG = {
   CODE_UPPERCASE: true,
   MAX_DISCOUNT_PERCENTAGE: 100,
   MAX_DISCOUNT_FIXED: 999999.99,
-  MIN_PURCHASE_REQUIRED: 0,
+  MIN_PURCHASE_REQUIRED: 0
 };
 
 // API ENDPOINTS (PATHS)
@@ -103,7 +103,7 @@ export const API_ENDPOINTS = {
     LOGOUT: '/api/auth/logout',
     PROFILE: '/api/auth/me',
     REFRESH: '/api/auth/refresh',
-    VERIFY: '/api/auth/verify',
+    VERIFY: '/api/auth/verify'
   },
   PRODUCTS: {
     LIST: '/api/products',
@@ -111,7 +111,7 @@ export const API_ENDPOINTS = {
     GET: '/api/products/:id',
     UPDATE: '/api/products/:id',
     DELETE: '/api/products/:id',
-    SEARCH: '/api/products/search',
+    SEARCH: '/api/products/search'
   },
   ORDERS: {
     LIST: '/api/orders',
@@ -119,14 +119,14 @@ export const API_ENDPOINTS = {
     GET: '/api/orders/:id',
     UPDATE: '/api/orders/:id',
     CANCEL: '/api/orders/:id/cancel',
-    TRACK: '/api/orders/:id/track',
+    TRACK: '/api/orders/:id/track'
   },
   CATEGORIES: {
     LIST: '/api/categories',
     CREATE: '/api/categories',
     GET: '/api/categories/:id',
     UPDATE: '/api/categories/:id',
-    DELETE: '/api/categories/:id',
+    DELETE: '/api/categories/:id'
   },
   COUPONS: {
     LIST: '/api/coupons',
@@ -134,8 +134,8 @@ export const API_ENDPOINTS = {
     GET: '/api/coupons/:id',
     UPDATE: '/api/coupons/:id',
     DELETE: '/api/coupons/:id',
-    VALIDATE: '/api/coupons/validate/:code',
-  },
+    VALIDATE: '/api/coupons/validate/:code'
+  }
 };
 
 // HTTP STATUS CODES
@@ -150,7 +150,7 @@ export const HTTP_STATUS = {
   CONFLICT: 409,
   UNPROCESSABLE_ENTITY: 422,
   INTERNAL_SERVER_ERROR: 500,
-  SERVICE_UNAVAILABLE: 503,
+  SERVICE_UNAVAILABLE: 503
 };
 
 // ERROR MESSAGES
@@ -215,7 +215,7 @@ export const ERROR_MESSAGES = {
 
   // Address errors
   ADDRESS_NOT_FOUND: 'Address not found',
-  FAILED_TO_GET_ADDRESSES: 'Failed to get addresses',
+  FAILED_TO_GET_ADDRESSES: 'Failed to get addresses'
 };
 
 // SUCCESS MESSAGES
@@ -259,7 +259,7 @@ export const SUCCESS_MESSAGES = {
   REVIEW_DELETED: 'Review deleted successfully',
 
   // Payment
-  PAYMENT_SUCCESSFUL: 'Payment processed successfully',
+  PAYMENT_SUCCESSFUL: 'Payment processed successfully'
 };
 
 // CACHE CONFIGURATION
@@ -269,14 +269,14 @@ export const CACHE_CONFIG = {
   PRODUCTS_TTL: 60000, // 1 minute
   CATEGORIES_TTL: 120000, // 2 minutes
   USER_PROFILE_TTL: 300000, // 5 minutes
-  ORDERS_TTL: 30000, // 30 seconds
+  ORDERS_TTL: 30000 // 30 seconds
 };
 
 // TIMEOUT CONFIGURATION (milliseconds)
 export const TIMEOUT_CONFIG = {
   API_REQUEST: 30000, // 30 seconds
   DATABASE: 10000, // 10 seconds
-  GRAPHQL: 15000, // 15 seconds
+  GRAPHQL: 15000 // 15 seconds
 };
 
 // REGEX PATTERNS (for validation)
@@ -285,6 +285,6 @@ export const REGEX_PATTERNS = {
   PHONE: /^[\d\-\s()]{10,}$/,
   POSTAL_CODE: /^\d{5,6}$/,
   COUPON_CODE: /^[A-Z0-9]{6,20}$/,
-  PRODUCT_SKU: /^[A-Z0-9\-]{3,20}$/,
-  URL: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/,
+  PRODUCT_SKU: /^[A-Z0-9-]{3,20}$/,
+  URL: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/
 };

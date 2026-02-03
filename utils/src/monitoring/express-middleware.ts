@@ -35,7 +35,7 @@ export function createSplunkOnCallMiddleware(config: SplunkOnCallMiddlewareConfi
   const metrics: RequestMetrics = {
     total: 0,
     errors: 0,
-    windowStart: Date.now(),
+    windowStart: Date.now()
   };
 
   const excludePaths = new Set(config.excludePaths || ['/health', '/ready', '/metrics']);
@@ -135,8 +135,8 @@ export function createSplunkOnCallMiddleware(config: SplunkOnCallMiddlewareConfi
           method: req.method,
           query: req.query,
           ip: req.ip,
-          userAgent: req.get('user-agent'),
-        },
+          userAgent: req.get('user-agent')
+        }
       });
     }
 
@@ -151,14 +151,14 @@ export function createSplunkOnCallMiddleware(config: SplunkOnCallMiddlewareConfi
     const windowSeconds = (Date.now() - metrics.windowStart) / 1000;
     return {
       requestsPerMinute: windowSeconds > 0 ? (metrics.total / windowSeconds) * 60 : 0,
-      errorRate: metrics.total > 0 ? metrics.errors / metrics.total : 0,
+      errorRate: metrics.total > 0 ? metrics.errors / metrics.total : 0
     };
   };
 
   return {
     requestTracker,
     errorHandler,
-    getMetrics,
+    getMetrics
   };
 }
 
@@ -179,13 +179,13 @@ export function createHealthEndpoint(
         const healthy = await check();
         results[name] = {
           healthy,
-          latencyMs: Date.now() - startTime,
+          latencyMs: Date.now() - startTime
         };
         if (!healthy) allHealthy = false;
       } catch (error) {
         results[name] = {
           healthy: false,
-          latencyMs: Date.now() - startTime,
+          latencyMs: Date.now() - startTime
         };
         allHealthy = false;
       }
@@ -195,7 +195,7 @@ export function createHealthEndpoint(
       service: serviceName,
       status: allHealthy ? 'healthy' : 'unhealthy',
       timestamp: new Date().toISOString(),
-      checks: results,
+      checks: results
     });
   };
 }

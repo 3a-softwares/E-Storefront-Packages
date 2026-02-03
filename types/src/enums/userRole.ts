@@ -3,5 +3,5 @@ export enum UserRole {
   SELLER = 'seller',
   ADMIN = 'admin',
   SUPPORT = 'support',
-  SUPER_ADMIN = 'super_admin',
+  SUPER_ADMIN = 'super_admin'
 }

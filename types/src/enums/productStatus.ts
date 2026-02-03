@@ -3,5 +3,5 @@ export enum ProductStatus {
   PENDING_APPROVAL = 'pending_approval',
   APPROVED = 'approved',
   REJECTED = 'rejected',
-  ARCHIVED = 'archived',
+  ARCHIVED = 'archived'
 }

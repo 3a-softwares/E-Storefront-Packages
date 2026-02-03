@@ -5,7 +5,7 @@ export enum PaymentMethod {
   STRIPE = 'stripe',
   CASH_ON_DELIVERY = 'cash_on_delivery',
   BANK_TRANSFER = 'bank_transfer',
-  UPI = 'upi',
+  UPI = 'upi'
 }
 
 export const PaymentMethodReverse: any = {
@@ -15,5 +15,5 @@ export const PaymentMethodReverse: any = {
   stripe: 'STRIPE',
   cash_on_delivery: 'CASH_ON_DELIVERY',
   bank_transfer: 'BANK_TRANSFER',
-  upi: 'UPI',
+  upi: 'UPI'
 };

@@ -13,7 +13,7 @@ export interface CookieOptions {
 const DEFAULT_OPTIONS: CookieOptions = {
   path: '/',
   secure: process.env.NODE_ENV === 'production',
-  sameSite: 'Lax',
+  sameSite: 'Lax'
 };
 
 /**
@@ -100,5 +100,5 @@ export const AUTH_COOKIE_NAMES = {
   ACCESS_TOKEN: 'accessToken',
   REFRESH_TOKEN: 'refreshToken',
   TOKEN_EXPIRY: 'tokenExpiry',
-  USER: 'user',
+  USER: 'user'
 } as const;

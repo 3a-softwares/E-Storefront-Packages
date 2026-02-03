@@ -16,7 +16,7 @@ export {
   updateAccessToken,
   setupAutoRefresh,
   type AuthTokens,
-  type StoredAuth,
+  type StoredAuth
 } from './auth';
 
 export {
@@ -24,7 +24,7 @@ export {
   getCookie,
   removeCookie,
   areCookiesEnabled,
-  AUTH_COOKIE_NAMES,
+  AUTH_COOKIE_NAMES
 } from './cookies';
 
 export * from './api';

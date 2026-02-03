@@ -6,26 +6,26 @@ const meta = {
   title: 'Form/Radio',
   component: Radio,
   parameters: {
-    layout: 'centered',
+    layout: 'centered'
   },
   tags: ['autodocs'],
   argTypes: {
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg'],
+      options: ['sm', 'md', 'lg']
     },
     orientation: {
       control: 'select',
-      options: ['vertical', 'horizontal'],
+      options: ['vertical', 'horizontal']
     },
     variant: {
       control: 'select',
-      options: ['default', 'card'],
+      options: ['default', 'card']
     },
     disabled: {
-      control: 'boolean',
-    },
-  },
+      control: 'boolean'
+    }
+  }
 } satisfies Meta<typeof Radio>;
 
 export default meta;
@@ -44,9 +44,9 @@ export const Default: Story = {
     options: [
       { value: 'option1', label: 'Option 1' },
       { value: 'option2', label: 'Option 2' },
-      { value: 'option3', label: 'Option 3' },
-    ],
-  },
+      { value: 'option3', label: 'Option 3' }
+    ]
+  }
 };
 
 export const WithDescription: Story = {
@@ -58,20 +58,20 @@ export const WithDescription: Story = {
       {
         value: 'basic',
         label: 'Basic Plan',
-        description: 'Perfect for individuals and small projects',
+        description: 'Perfect for individuals and small projects'
       },
       {
         value: 'pro',
         label: 'Pro Plan',
-        description: 'Best for professionals and growing teams',
+        description: 'Best for professionals and growing teams'
       },
       {
         value: 'enterprise',
         label: 'Enterprise Plan',
-        description: 'Advanced features for large organizations',
-      },
-    ],
-  },
+        description: 'Advanced features for large organizations'
+      }
+    ]
+  }
 };
 
 export const CardVariant: Story = {
@@ -84,20 +84,20 @@ export const CardVariant: Story = {
       {
         value: 'standard',
         label: 'Standard Delivery',
-        description: '5-7 business days',
+        description: '5-7 business days'
       },
       {
         value: 'express',
         label: 'Express Delivery',
-        description: '2-3 business days',
+        description: '2-3 business days'
       },
       {
         value: 'overnight',
         label: 'Overnight Delivery',
-        description: 'Next business day',
-      },
-    ],
-  },
+        description: 'Next business day'
+      }
+    ]
+  }
 };
 
 export const WithIcons: Story = {
@@ -110,9 +110,9 @@ export const WithIcons: Story = {
       { value: 'card', label: 'Credit/Debit Card', icon: '💳' },
       { value: 'bank', label: 'Bank Transfer', icon: '🏦' },
       { value: 'upi', label: 'UPI', icon: '📱' },
-      { value: 'wallet', label: 'Digital Wallet', icon: '👛' },
-    ],
-  },
+      { value: 'wallet', label: 'Digital Wallet', icon: '👛' }
+    ]
+  }
 };
 
 export const Horizontal: Story = {
@@ -125,9 +125,9 @@ export const Horizontal: Story = {
       { value: 'small', label: 'Small' },
       { value: 'medium', label: 'Medium' },
       { value: 'large', label: 'Large' },
-      { value: 'xlarge', label: 'X-Large' },
-    ],
-  },
+      { value: 'xlarge', label: 'X-Large' }
+    ]
+  }
 };
 
 export const HorizontalCard: Story = {
@@ -139,9 +139,9 @@ export const HorizontalCard: Story = {
     variant: 'card',
     options: [
       { value: 'monthly', label: 'Monthly', description: '$9.99/mo' },
-      { value: 'yearly', label: 'Yearly', description: '$99.99/yr (Save 17%)' },
-    ],
-  },
+      { value: 'yearly', label: 'Yearly', description: '$99.99/yr (Save 17%)' }
+    ]
+  }
 };
 
 export const WithDisabledOption: Story = {
@@ -153,9 +153,9 @@ export const WithDisabledOption: Story = {
     options: [
       { value: 'red', label: 'Red', description: 'Available' },
       { value: 'blue', label: 'Blue', description: 'Out of stock', disabled: true },
-      { value: 'green', label: 'Green', description: 'Available' },
-    ],
-  },
+      { value: 'green', label: 'Green', description: 'Available' }
+    ]
+  }
 };
 
 export const FullyDisabled: Story = {
@@ -168,9 +168,9 @@ export const FullyDisabled: Story = {
     options: [
       { value: 'option1', label: 'Option 1' },
       { value: 'option2', label: 'Option 2' },
-      { value: 'option3', label: 'Option 3' },
-    ],
-  },
+      { value: 'option3', label: 'Option 3' }
+    ]
+  }
 };
 
 export const WithError: Story = {
@@ -181,9 +181,9 @@ export const WithError: Story = {
     error: 'Please select an option to continue',
     options: [
       { value: 'yes', label: 'Yes' },
-      { value: 'no', label: 'No' },
-    ],
-  },
+      { value: 'no', label: 'No' }
+    ]
+  }
 };
 
 export const SmallSize: Story = {
@@ -194,9 +194,9 @@ export const SmallSize: Story = {
     size: 'sm',
     options: [
       { value: 'option1', label: 'Option 1', description: 'Description text' },
-      { value: 'option2', label: 'Option 2', description: 'Description text' },
-    ],
-  },
+      { value: 'option2', label: 'Option 2', description: 'Description text' }
+    ]
+  }
 };
 
 export const LargeSize: Story = {
@@ -208,7 +208,7 @@ export const LargeSize: Story = {
     variant: 'card',
     options: [
       { value: 'option1', label: 'Option 1', description: 'Description text' },
-      { value: 'option2', label: 'Option 2', description: 'Description text' },
-    ],
-  },
+      { value: 'option2', label: 'Option 2', description: 'Description text' }
+    ]
+  }
 };

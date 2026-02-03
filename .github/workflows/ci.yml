@@ -2,9 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [main, develop, feature/**]
+    branches: [develop, feature/**]
   pull_request:
-    branches: [main, develop]
+    branches: [develop, feature/**]
 
 concurrency:
   group: ci-${{ github.ref }}

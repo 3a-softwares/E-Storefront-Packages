@@ -9,16 +9,15 @@ env:
   NODE_VERSION: 18
 
 jobs:
+  # ===================== BUILD TYPES (ONCE) =====================
   build-types:
-    runs-on: ubuntu-latest
     name: Build types
+    runs-on: ubuntu-latest
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.head_branch == 'main'
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
 
       - uses: actions/setup-node@v4
         with:
@@ -28,14 +27,10 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn build:types
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: types-dist
-          path: types/dist
-
+  # ===================== PUBLISH TYPES =====================
   publish-types:
-    runs-on: ubuntu-latest
     name: Publish types
+    runs-on: ubuntu-latest
     needs: build-types
     if: >
       github.event.workflow_run.conclusion == 'success' &&
@@ -43,7 +38,6 @@ jobs:
     env:
       PKG_NAME: '@3asoftwares/types'
       PKG_DIR: 'types'
-
     steps:
       - uses: actions/checkout@v4
 
@@ -51,25 +45,18 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
-          cache: yarn
 
       - run: yarn install --frozen-lockfile
+      - run: yarn build:types
 
       - name: Compare npm version
         id: version
         run: |
           PKG_VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
           NPM_VERSION=$(npm view "${PKG_NAME}" version 2>/dev/null || echo "0.0.0")
-
-          echo "📦 package.json: $PKG_VERSION"
-          echo "🌐 npm latest  : $NPM_VERSION"
-
-          version_gt () {
-            [ "$1" = "$2" ] && return 1
-            [ "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1" ]
-          }
-
-          if version_gt "$PKG_VERSION" "$NPM_VERSION"; then
+          echo "package=$PKG_VERSION npm=$NPM_VERSION"
+          if [ "$(printf '%s\n' "$PKG_VERSION" "$NPM_VERSION" | sort -V | tail -1)" = "$PKG_VERSION" ] &&
+             [ "$PKG_VERSION" != "$NPM_VERSION" ]; then
             echo "publish=true" >> $GITHUB_OUTPUT
           else
             echo "publish=false" >> $GITHUB_OUTPUT
@@ -83,9 +70,10 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+  # ===================== PUBLISH UTILS (PARALLEL) =====================
   publish-utils:
-    runs-on: ubuntu-latest
     name: Publish utils
+    runs-on: ubuntu-latest
     needs: build-types
     if: >
       github.event.workflow_run.conclusion == 'success' &&
@@ -93,7 +81,6 @@ jobs:
     env:
       PKG_NAME: '@3asoftwares/utils'
       PKG_DIR: 'utils'
-
     steps:
       - uses: actions/checkout@v4
 
@@ -101,9 +88,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
-          cache: yarn
 
       - run: yarn install --frozen-lockfile
+      - run: yarn build:types
       - run: yarn build:utils
 
       - name: Compare npm version
@@ -111,32 +98,25 @@ jobs:
         run: |
           PKG_VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
           NPM_VERSION=$(npm view "${PKG_NAME}" version 2>/dev/null || echo "0.0.0")
-
-          echo "📦 package.json: $PKG_VERSION"
-          echo "🌐 npm latest  : $NPM_VERSION"
-
-          version_gt () {
-            [ "$1" = "$2" ] && return 1
-            [ "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1" ]
-          }
-
-          if version_gt "$PKG_VERSION" "$NPM_VERSION"; then
+          echo "package=$PKG_VERSION npm=$NPM_VERSION"
+          if [ "$(printf '%s\n' "$PKG_VERSION" "$NPM_VERSION" | sort -V | tail -1)" = "$PKG_VERSION" ] &&
+             [ "$PKG_VERSION" != "$NPM_VERSION" ]; then
             echo "publish=true" >> $GITHUB_OUTPUT
           else
             echo "publish=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Publish utils
-        if: steps.version.outputs.publish == 'true'
+      - if: steps.version.outputs.publish == 'true'
         run: |
           cd ${PKG_DIR}
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+  # ===================== PUBLISH UI (PARALLEL) =====================
   publish-ui:
-    runs-on: ubuntu-latest
     name: Publish ui
+    runs-on: ubuntu-latest
     needs: build-types
     if: >
       github.event.workflow_run.conclusion == 'success' &&
@@ -144,7 +124,6 @@ jobs:
     env:
       PKG_NAME: '@3asoftwares/ui'
       PKG_DIR: 'ui-library'
-
     steps:
       - uses: actions/checkout@v4
 
@@ -152,9 +131,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
-          cache: yarn
 
       - run: yarn install --frozen-lockfile
+      - run: yarn build:types
       - run: yarn build:utils
       - run: yarn build:ui
 
@@ -163,29 +142,22 @@ jobs:
         run: |
           PKG_VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
           NPM_VERSION=$(npm view "${PKG_NAME}" version 2>/dev/null || echo "0.0.0")
-
-          echo "📦 package.json: $PKG_VERSION"
-          echo "🌐 npm latest  : $NPM_VERSION"
-
-          version_gt () {
-            [ "$1" = "$2" ] && return 1
-            [ "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1" ]
-          }
-
-          if version_gt "$PKG_VERSION" "$NPM_VERSION"; then
+          echo "package=$PKG_VERSION npm=$NPM_VERSION"
+          if [ "$(printf '%s\n' "$PKG_VERSION" "$NPM_VERSION" | sort -V | tail -1)" = "$PKG_VERSION" ] &&
+             [ "$PKG_VERSION" != "$NPM_VERSION" ]; then
             echo "publish=true" >> $GITHUB_OUTPUT
           else
             echo "publish=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Publish ui
-        if: steps.version.outputs.publish == 'true'
+      - if: steps.version.outputs.publish == 'true'
         run: |
           cd ${PKG_DIR}
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+  # ===================== STORYBOOK (AFTER UI) =====================
   storybook:
     name: Deploy Storybook (gh-pages)
     runs-on: ubuntu-latest
@@ -193,17 +165,19 @@ jobs:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.head_branch == 'main'
-
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: yarn
+
       - run: yarn install --frozen-lockfile
       - run: yarn build:types
       - run: yarn build:utils
       - run: yarn workspace @3asoftwares/ui build-storybook
+
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -12,6 +12,9 @@ jobs:
   build-types:
     runs-on: ubuntu-latest
     name: Build types
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,8 +26,6 @@ jobs:
           cache: yarn
 
       - run: yarn install --frozen-lockfile
-
-      # ✅ FIX: build via yarn (ensures tsup is in PATH)
       - run: yarn build:types
 
       - uses: actions/upload-artifact@v4
@@ -33,183 +34,165 @@ jobs:
           path: types/dist
 
   publish-types:
-    if: >
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'main'
-
     runs-on: ubuntu-latest
     name: Publish types
     needs: build-types
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
     env:
       PKG_NAME: '@3asoftwares/types'
       PKG_DIR: 'types'
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-
-      - name: Detect version change
-        id: changed
-        run: |
-          git diff HEAD~1 HEAD -- ${PKG_DIR}/package.json | grep '"version"' \
-            && echo "changed=true" >> $GITHUB_OUTPUT \
-            || echo "changed=false" >> $GITHUB_OUTPUT
 
       - uses: actions/setup-node@v4
-        if: steps.changed.outputs.changed == 'true'
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
           cache: yarn
 
       - run: yarn install --frozen-lockfile
-        if: steps.changed.outputs.changed == 'true'
 
-      - name: Check npm version
-        id: check
-        if: steps.changed.outputs.changed == 'true'
+      - name: Compare npm version
+        id: version
         run: |
-          VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          if npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; then
-            echo "skip=true" >> $GITHUB_OUTPUT
+          PKG_VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
+          NPM_VERSION=$(npm view "${PKG_NAME}" version 2>/dev/null || echo "0.0.0")
+
+          echo "📦 package.json: $PKG_VERSION"
+          echo "🌐 npm latest  : $NPM_VERSION"
+
+          version_gt () {
+            [ "$1" = "$2" ] && return 1
+            [ "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1" ]
+          }
+
+          if version_gt "$PKG_VERSION" "$NPM_VERSION"; then
+            echo "publish=true" >> $GITHUB_OUTPUT
           else
-            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "publish=false" >> $GITHUB_OUTPUT
           fi
 
-      # ✅ FIX: yarn build (not npm run)
-      - name: Build types
-        if: steps.changed.outputs.changed == 'true' && steps.check.outputs.skip != 'true'
-        run: yarn build:types
-
       - name: Publish types
-        if: steps.changed.outputs.changed == 'true' && steps.check.outputs.skip != 'true'
-        run: npx --workspace=@3asoftwares/types npm publish --access public
+        if: steps.version.outputs.publish == 'true'
+        run: |
+          cd ${PKG_DIR}
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-utils:
-    if: >
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'main'
-
     runs-on: ubuntu-latest
     name: Publish utils
     needs: build-types
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
     env:
       PKG_NAME: '@3asoftwares/utils'
       PKG_DIR: 'utils'
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-
-      - name: Detect version change
-        id: changed
-        run: |
-          git diff HEAD~1 HEAD -- ${PKG_DIR}/package.json | grep '"version"' \
-            && echo "changed=true" >> $GITHUB_OUTPUT \
-            || echo "changed=false" >> $GITHUB_OUTPUT
 
       - uses: actions/setup-node@v4
-        if: steps.changed.outputs.changed == 'true'
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
           cache: yarn
 
       - run: yarn install --frozen-lockfile
-        if: steps.changed.outputs.changed == 'true'
+      - run: yarn build:utils
 
-      - name: Check npm version
-        id: check
-        if: steps.changed.outputs.changed == 'true'
+      - name: Compare npm version
+        id: version
         run: |
-          VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          if npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; then
-            echo "skip=true" >> $GITHUB_OUTPUT
+          PKG_VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
+          NPM_VERSION=$(npm view "${PKG_NAME}" version 2>/dev/null || echo "0.0.0")
+
+          echo "📦 package.json: $PKG_VERSION"
+          echo "🌐 npm latest  : $NPM_VERSION"
+
+          version_gt () {
+            [ "$1" = "$2" ] && return 1
+            [ "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1" ]
+          }
+
+          if version_gt "$PKG_VERSION" "$NPM_VERSION"; then
+            echo "publish=true" >> $GITHUB_OUTPUT
           else
-            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "publish=false" >> $GITHUB_OUTPUT
           fi
 
-      # ✅ FIX: yarn build (not npm run)
-      - name: Build utils
-        if: steps.changed.outputs.changed == 'true' && steps.check.outputs.skip != 'true'
-        run: yarn build:utils
-
       - name: Publish utils
-        if: steps.changed.outputs.changed == 'true' && steps.check.outputs.skip != 'true'
-        run: npx --workspace=@3asoftwares/utils npm publish --access public
+        if: steps.version.outputs.publish == 'true'
+        run: |
+          cd ${PKG_DIR}
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-ui:
-    if: >
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'main'
-
     runs-on: ubuntu-latest
     name: Publish ui
     needs: build-types
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
     env:
       PKG_NAME: '@3asoftwares/ui'
       PKG_DIR: 'ui-library'
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-
-      - name: Detect version change
-        id: changed
-        run: |
-          git diff HEAD~1 HEAD -- ${PKG_DIR}/package.json | grep '"version"' \
-            && echo "changed=true" >> $GITHUB_OUTPUT \
-            || echo "changed=false" >> $GITHUB_OUTPUT
 
       - uses: actions/setup-node@v4
-        if: steps.changed.outputs.changed == 'true'
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org
           cache: yarn
 
       - run: yarn install --frozen-lockfile
-        if: steps.changed.outputs.changed == 'true'
+      - run: yarn build:utils
+      - run: yarn build:ui
 
-      - name: Check npm version
-        id: check
-        if: steps.changed.outputs.changed == 'true'
+      - name: Compare npm version
+        id: version
         run: |
-          VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
-          if npm view "${PKG_NAME}@${VERSION}" version >/dev/null 2>&1; then
-            echo "skip=true" >> $GITHUB_OUTPUT
+          PKG_VERSION=$(node -p "require('./${PKG_DIR}/package.json').version")
+          NPM_VERSION=$(npm view "${PKG_NAME}" version 2>/dev/null || echo "0.0.0")
+
+          echo "📦 package.json: $PKG_VERSION"
+          echo "🌐 npm latest  : $NPM_VERSION"
+
+          version_gt () {
+            [ "$1" = "$2" ] && return 1
+            [ "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1" ]
+          }
+
+          if version_gt "$PKG_VERSION" "$NPM_VERSION"; then
+            echo "publish=true" >> $GITHUB_OUTPUT
           else
-            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "publish=false" >> $GITHUB_OUTPUT
           fi
 
-      # ✅ FIX: yarn build chain
-      - name: Build ui
-        if: steps.changed.outputs.changed == 'true' && steps.check.outputs.skip != 'true'
-        run: |
-          yarn build:utils
-          yarn build:ui
-
       - name: Publish ui
-        if: steps.changed.outputs.changed == 'true' && steps.check.outputs.skip != 'true'
-        run: npx --workspace=@3asoftwares/ui npm publish --access public
+        if: steps.version.outputs.publish == 'true'
+        run: |
+          cd ${PKG_DIR}
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   storybook:
-    if: >
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'main'
-
     name: Deploy Storybook (gh-pages)
     runs-on: ubuntu-latest
     needs: publish-ui
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
 
     steps:
       - uses: actions/checkout@v4

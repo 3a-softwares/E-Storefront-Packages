@@ -11,6 +11,5 @@ export default defineConfig({
   dts: true,
   clean: true,
   splitting: false,
-
   external: ['axios', 'express', 'express-validator', '@3asoftwares/types']
 });

@@ -6,39 +6,5 @@ export default defineConfig({
   plugins: [react()],
   css: {
     postcss: path.resolve(__dirname, 'postcss.config.cjs')
-  },
-  build: {
-    lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'ui-library',
-      formats: ['es', 'cjs'],
-      fileName: format => (format === 'es' ? 'index.mjs' : 'index.js')
-    },
-    rollupOptions: {
-      external: [
-        'react',
-        'react-dom',
-        '@3asoftwares/types',
-        '@fortawesome/fontawesome-svg-core',
-        '@fortawesome/free-solid-svg-icons',
-        '@fortawesome/react-fontawesome'
-      ],
-      output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          '@3asoftwares/types': 'ThreeASoftwaresTypes',
-          '@fortawesome/fontawesome-svg-core': 'FontAwesome',
-          '@fortawesome/free-solid-svg-icons': 'FontAwesomeSolid',
-          '@fortawesome/react-fontawesome': 'FontAwesomeReact'
-        },
-        assetFileNames: assetInfo => {
-          if (assetInfo.name === 'style.css') {
-            return 'styles.css';
-          }
-          return assetInfo.name!;
-        }
-      }
-    }
   }
 });
